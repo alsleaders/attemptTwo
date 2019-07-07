@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-// using attempttwo.Models;
+using attempttwo.Model;
 
 namespace attempttwo
 {
@@ -45,6 +45,8 @@ namespace attempttwo
       modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
     }
 
-
+    public DbSet<Location> Locations { get; set; }
+    public DbSet<Trip> Trips { get; set; }
+    public DbSet<Destination> Destinations { get; set; }
   }
 }
