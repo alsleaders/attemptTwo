@@ -53,18 +53,18 @@ export class NavMenu extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/CurrentDrives">
+                  <NavLink tag={Link} className="text-dark" to="/CurrentDrive">
                     Current Drives
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/counter">
-                    Counter
+                  <NavLink tag={Link} className="text-dark" to="/PastDrive">
+                    Past Drives
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/fetch-data">
-                    Fetch data
+                  <NavLink tag={Link} className="text-dark" to="/ThingsMissed">
+                    Things You Missed
                   </NavLink>
                 </NavItem>
               </ul>
