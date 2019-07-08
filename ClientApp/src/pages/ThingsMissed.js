@@ -19,6 +19,7 @@ export default function ThingsMissed() {
   }
 
   const deleteFromTable = itemId => {
+    console.log(itemId)
     axios.delete(`https://localhost:5001/api/location/${itemId}`).then(resp => {
       console.log(resp.data)
       setMapList(oldList => oldList.filter(item => item.id != itemId))
@@ -31,8 +32,9 @@ export default function ThingsMissed() {
       <h1>These are some of the things you've missed</h1>
       <p className="instructions">
         Feel free to add to your current trip, keep a running list of places you
-        want to go back to, or admit that your priorities change and you aren't
-        going to try and make it back to that cool place you heard about once.
+        want to go back to, or admit that your priorities change and you really
+        aren't going to try and make it back to that cool place you heard about
+        that once. <br />
         Anything goes.
       </p>
       <table className="table table-striped">
@@ -53,7 +55,10 @@ export default function ThingsMissed() {
               </td>
               <td>{item.place}</td>
               <td>
-                <button className="button" onClick={deleteFromTable}>
+                <button
+                  className="button"
+                  onClick={() => deleteFromTable(item.id)}
+                >
                   Delete
                 </button>
               </td>
