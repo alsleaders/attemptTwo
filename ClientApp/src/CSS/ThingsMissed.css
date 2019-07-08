@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Lora&display=swap');
+
+html {
+  font-family: 'Lora', serif;
+  --main-bg-color: #a9bcd0;
+  --main-accent-color: #699bd1;
+  --main-font-color: #373f51;
+  background-color: var(--main-bg-color);
+  color: var(--main-font-color);
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.things-missed {
+  text-align: center;
+}
+
+.instructions {
+  border: ridge 0.2rem var(--main-accent-color);
+  padding: 0.2rem;
+}
+
+.button:hover {
+  border: outset 0.1rem var(--main-font-color);
+  background-color: #416486;
+  color: rgb(235, 227, 227);
+}

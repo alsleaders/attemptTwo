@@ -1,9 +1,10 @@
 import React from 'react'
+import '../CSS/PastDrive.css'
 
 export default function PastDrive() {
   return (
     <section>
-      <h1>These are your past drives</h1>
+      <h1>Oh the Places You've Been</h1>
       <p>
         The past is another country. 1987's just the Isle of Wight. Two wrongs
         don't make a left turn. Why are you pointing your screwdrivers like

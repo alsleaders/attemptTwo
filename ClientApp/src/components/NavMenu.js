@@ -9,7 +9,7 @@ import {
   NavLink
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import './NavMenu.css'
+import '../CSS/NavMenu.css'
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name

@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
+import '../CSS/CurrentDrive.css'
+import Script from 'react-script'
 
 class CurrentDrive extends Component {
+  handleLoad = () => {
+    // Mapbox is ready!
+  }
   render() {
     return (
       <div>
         <header>
           <h1>Your Current Drive</h1>
         </header>
+        {/* <Script
+          url="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"
+          onLoad={this.handleLoad}
+        /> */}
         <p>
           Nice to meet you, Rose. Rose... before I go, I just want to tell you:
           you were fantastic. Absolutely fantastic. And do you know what? So was

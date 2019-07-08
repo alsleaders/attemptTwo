@@ -1,0 +1,29 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Lora&display=swap');
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+html {
+  font-size: 14px;
+  font-family: 'Lora', serif;
+  --main-bg-color: #a9bcd0;
+  --main-accent-color: #699bd1;
+  --main-font-color: #373f51;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+    /* padding: 8px; */
+  }
+}
+
+.box-shadow {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+.navbar-expand-sm {
+  background-color: var(--main-accent-color);
+}

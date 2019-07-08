@@ -1,5 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Lora&display=swap');
+
 body {
-  background-color: aquamarine;
+  font-family: 'Lora', serif;
+  --main-bg-color: #a9bcd0;
+  --main-accent-color: whitesmoke;
+  --main-font-color: #373f51;
+  background-color: var(--main-bg-color);
+  color: var(--main-font-color);
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -14,6 +21,12 @@ body {
 
 h3 {
   text-align: center;
+}
+
+.overlays {
+  height: 90%;
+  width: 100%;
+  max-width: 705px;
 }
 
 input {
@@ -31,5 +44,5 @@ input {
   height: 1rem;
   width: 1rem;
   border-radius: 1rem;
-  background: blue;
+  background: rgb(219, 12, 12);
 }
