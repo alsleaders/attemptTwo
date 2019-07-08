@@ -1,0 +1,6 @@
+html,
+body,
+#root,
+.fullHeight {
+  height: 100%;
+}

@@ -5,7 +5,7 @@ import Home from './components/Home'
 import CurrentDrive from './pages/CurrentDrive'
 import PastDrive from './pages/PastDrive'
 import ThingsMissed from './pages/ThingsMissed'
-
+import './index.css'
 export default class App extends Component {
   static displayName = App.name
 

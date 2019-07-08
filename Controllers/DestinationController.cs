@@ -42,5 +42,14 @@ namespace attempttwo.Controllers
       return destination;
     }
 
+    //Post api/destination
+    [HttpPost]
+    public ActionResult<Destination> PostDestination(Destination destination)
+    {
+      _context.Destinations.Add(destination);
+      _context.SaveChanges();
+      return destination;
+    }
+
   }
 }
