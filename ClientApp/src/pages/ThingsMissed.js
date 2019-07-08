@@ -22,7 +22,7 @@ export default function ThingsMissed() {
     console.log(itemId)
     axios.delete(`https://localhost:5001/api/location/${itemId}`).then(resp => {
       console.log(resp.data)
-      setMapList(oldList => oldList.filter(item => item.id != itemId))
+      setMapList(oldList => oldList.filter(item => item.id !== itemId))
       console.log('delete works')
     })
   }

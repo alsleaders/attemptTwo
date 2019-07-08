@@ -1,10 +1,39 @@
 import React, { Component } from 'react'
 import '../CSS/CurrentDrive.css'
 import Script from 'react-script'
+import axios from 'axios'
+import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl'
+
+const TOKEN =
+  'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
 
 class CurrentDrive extends Component {
-  handleLoad = () => {
-    // Mapbox is ready!
+  mapRef = {}
+  // get props from add button on thingsMissed
+  state = {
+    view: {},
+    mapList: [],
+    cityInfo: null
+  }
+
+  //append that location to the map list
+
+  componentDidMount() {
+    console.log(this.mapRef)
+    let mapboxobj = this.mapRef.getMap()
+    console.log({ mapboxobj })
+    mapboxobj.addControl(
+      // eslint-disable-next-line no-undef
+      new MapboxDirections({
+        accessToken: TOKEN
+      }),
+      'top-left'
+    )
+    axios.get('https://localhost:5001/api/location').then(resp => {
+      this.setState({
+        mapList: resp.data
+      })
+    })
   }
   render() {
     return (
@@ -12,10 +41,49 @@ class CurrentDrive extends Component {
         <header>
           <h1>Your Current Drive</h1>
         </header>
-        {/* <Script
-          url="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.0/mapbox-gl-directions.js"
-          onLoad={this.handleLoad}
-        /> */}
+        <ReactMapGL
+          // {...view}
+          width="60"
+          height="60vh"
+          mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+          mapboxApiAccessToken={TOKEN}
+          onViewportChange={view => view}
+          ref={map => (this.mapRef = map)}
+        >
+          {/* <div style={{ position: 'absolute', left: 0 }}>
+            <NavigationControl />
+          </div> */}
+          {this.state.mapList.map(city => {
+            return (
+              <Marker key={city.id} latitude={city.lat} longitude={city.long}>
+                <button
+                  className="marker"
+                  onClick={e => {
+                    e.preventDefault()
+                    this.setState({
+                      cityInfo: city
+                    })
+                  }}
+                />
+              </Marker>
+            )
+          })}
+
+          {this.state.cityInfo ? (
+            <Popup
+              latitude={this.state.cityInfo.lat}
+              longitude={this.state.cityInfo.long}
+              onClose={() => {
+                this.setState({
+                  cityInfo: null
+                })
+              }}
+            >
+              <h2>{this.state.cityInfo.place}</h2>
+            </Popup>
+          ) : null}
+        </ReactMapGL>
+
         <p>
           Nice to meet you, Rose. Rose... before I go, I just want to tell you:
           you were fantastic. Absolutely fantastic. And do you know what? So was

@@ -9,6 +9,7 @@ const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
 
 export default function Home() {
+  // let mapRef = {}
   const [view, setView] = useState({
     latitude: 27.9506,
     // this is up to 90
@@ -89,6 +90,7 @@ export default function Home() {
           onViewportChange={view => {
             setView(view)
           }}
+          // ref={map => (this.mapRef = map)}
         >
           <div style={{ position: 'absolute', left: 0 }}>
             <NavigationControl />
