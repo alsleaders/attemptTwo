@@ -14,6 +14,9 @@ html {
   --main-font-color: #373f51;
 }
 @media (min-width: 768px) {
+  .navbar-expand-sm {
+    /* width: auto; */
+  }
   html {
     font-size: 16px;
     /* padding: 8px; */
@@ -26,4 +29,26 @@ html {
 
 .navbar-expand-sm {
   background-color: var(--main-accent-color);
+  /* width: 1140px; */
 }
+
+/* @media (min-width: 992px) {
+  .container,
+  .navbar {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container,
+  .navbar {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 576px) {
+  .container,
+  .navbar {
+    max-width: 540px;
+  }
+} */

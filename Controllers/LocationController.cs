@@ -28,6 +28,15 @@ namespace attempttwo.Controllers
       return await _context.Locations.ToListAsync();
     }
 
+    // GET: api/Location not all visited
+    [HttpGet("visited")]
+    public ActionResult<List<Location>> Get()
+    {
+      // return await _context.Locations.Where(w => w.Visited != true).ToListAsync();
+      var tm = _context.Locations.Where(w => w.Visited != true);
+      return tm.ToList();
+    }
+
     // GET: api/Location/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Location>> GetLocation(int id)

@@ -6,15 +6,17 @@ export default function ThingsMissed() {
   const [mapList, setMapList] = useState([])
 
   useEffect(() => {
-    axios.get('https://localhost:5001/api/location').then(resp => {
+    axios.get('https://localhost:5001/api/location/visited').then(resp => {
       console.log(resp.data)
       setMapList(resp.data)
     })
   }, [])
 
   const addToCurrentTrip = () => {
+    // pass in item
+    // get long and lat
     // add as a waypoint to the current trip
-    // pass as props to current travel route
+
     console.log('button works')
   }
 

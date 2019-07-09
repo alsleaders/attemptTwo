@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import '../CSS/CurrentDrive.css'
 import Script from 'react-script'
 import axios from 'axios'
-import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl'
+import ReactMapGL from 'react-map-gl'
 
 const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
@@ -41,19 +41,20 @@ class CurrentDrive extends Component {
         <header>
           <h1>Your Current Drive</h1>
         </header>
-        <ReactMapGL
-          // {...view}
-          width="60"
-          height="60vh"
-          mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
-          mapboxApiAccessToken={TOKEN}
-          onViewportChange={view => view}
-          ref={map => (this.mapRef = map)}
-        >
-          {/* <div style={{ position: 'absolute', left: 0 }}>
-            <NavigationControl />
-          </div> */}
-          {this.state.mapList.map(city => {
+        <section className="mapView">
+          <ReactMapGL
+            // {...view}
+            width="60"
+            height="60vh"
+            mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+            mapboxApiAccessToken={TOKEN}
+            onViewportChange={view => view}
+            ref={map => (this.mapRef = map)}
+          >
+            {/* <div style={{ position: 'absolute', right: 0 }}>
+              <Scale />
+            </div> */}
+            {/* {this.state.mapList.map(city => {
             return (
               <Marker key={city.id} latitude={city.lat} longitude={city.long}>
                 <button
@@ -81,8 +82,9 @@ class CurrentDrive extends Component {
             >
               <h2>{this.state.cityInfo.place}</h2>
             </Popup>
-          ) : null}
-        </ReactMapGL>
+          ) : null} */}
+          </ReactMapGL>
+        </section>
       </div>
     )
   }

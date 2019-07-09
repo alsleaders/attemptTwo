@@ -4,3 +4,12 @@ body,
 .fullHeight {
   height: 100%;
 }
+
+.mapbox-direction-component {
+  /* width: 80%; */
+}
+
+.directions-control {
+  width: 75%;
+  z-index: 1;
+}
