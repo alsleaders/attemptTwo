@@ -12,12 +12,12 @@ export default function ThingsMissed() {
     })
   }, [])
 
-  const addToCurrentTrip = () => {
+  const addToCurrentTrip = itemId => {
     // pass in item
     // get long and lat
     // add as a waypoint to the current trip
 
-    console.log('button works')
+    console.log('add button works')
   }
 
   const deleteFromTable = itemId => {
@@ -26,6 +26,14 @@ export default function ThingsMissed() {
       console.log(resp.data)
       setMapList(oldList => oldList.filter(item => item.id !== itemId))
       console.log('delete works')
+    })
+  }
+
+  const updateVisited = itemId => {
+    console.log(itemId)
+    axios.patch(`https://localhost:5001/api/location/${itemId}`).then(resp => {
+      setMapList(oldList => oldList.filter(item => item.id !== itemId))
+      console.log('visited updated')
     })
   }
 
@@ -45,13 +53,17 @@ export default function ThingsMissed() {
             <th>Add to Trip?</th>
             <th>Point of Interest</th>
             <th>Not worried about it?</th>
+            <th>Been there?</th>
           </tr>
         </thead>
         <tbody>
           {mapList.map(item => (
             <tr key={item.id}>
               <td>
-                <button className="button" onClick={addToCurrentTrip}>
+                <button
+                  className="button"
+                  onClick={() => addToCurrentTrip(item.id)}
+                >
                   Add
                 </button>
               </td>
@@ -62,6 +74,14 @@ export default function ThingsMissed() {
                   onClick={() => deleteFromTable(item.id)}
                 >
                   Delete
+                </button>
+              </td>
+              <td>
+                <button
+                  className="button"
+                  onClick={() => updateVisited(item.id)}
+                >
+                  Done That
                 </button>
               </td>
             </tr>

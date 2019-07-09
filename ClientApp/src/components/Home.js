@@ -15,12 +15,14 @@ export default function Home() {
     // this is up to 90
     longitude: -82.4572,
     // this is up to 180
-    zoom: 4
+    zoom: 2
   })
   const [selectedInfo, setSelectedInfo] = useState(null)
   const [mapData, setMapData] = useState([])
   const [currentLocation, setCurrentLocation] = useState('')
+  const [currentLocationData, setCurrentLocationData] = useState({})
   const [plannedDestination, setPlannedDestination] = useState('')
+  const [plannedDestinationData, setPlannedDestinationData] = useState({})
 
   useEffect(() => {
     axios.get('https://localhost:5001/api/location').then(resp => {
@@ -32,6 +34,7 @@ export default function Home() {
   const planTrip = e => {
     e.preventDefault()
     console.log('submitting')
+    let thing = {}
     axios
       .get(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${currentLocation}.json?access_token=${TOKEN}`
@@ -39,6 +42,12 @@ export default function Home() {
       .then(currentLocationResp => {
         console.log(currentLocationResp.data)
         console.log(currentLocationResp.data.features[0].center)
+        thing = {
+          Place: currentLocation,
+          Long: currentLocationResp.data.features[0].center[0],
+          Lat: currentLocationResp.data.features[0].center[1]
+        }
+        setCurrentLocationData(thing)
         axios
           .get(
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${plannedDestination}.json?access_token=${TOKEN}`
@@ -46,6 +55,11 @@ export default function Home() {
           .then(plannedDestinationResp => {
             console.log(plannedDestinationResp.data)
             console.log(plannedDestinationResp.data.features[0].center)
+            setPlannedDestinationData({
+              Place: plannedDestination,
+              Long: plannedDestinationResp.data.features[0].center[0],
+              Lat: plannedDestinationResp.data.features[0].center[1]
+            })
             axios
               .post('https://localhost:5001/api/location', {
                 Place: currentLocation,
@@ -71,6 +85,24 @@ export default function Home() {
                 setMapData(data => {
                   return data.concat(response.data)
                 })
+                // setCurrentLocation('')
+                // setPlannedDestination('')
+                // axios.get(
+                //   `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${
+                //     currentLocationData.Long
+                //   }%2C${currentLocationData.Lat}%3B${
+                //     plannedDestinationData.Long
+                //   }%2C${
+                //     plannedDestinationData.Lat
+                //   }.json?geometries=polyline&steps=true&overview=full&access_token=${TOKEN}`
+                // )
+                console.log(currentLocation)
+                console.log(currentLocationData)
+                console.log(thing)
+                console.log('helllllllo')
+                axios.get(
+                  'https://api.mapbox.com/directions/v5/mapbox/driving/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aW10cjkwMmR4NDNsZ2NoaWI0OGx3In0.xMNCyuPZyAjV6M8iX-fdJA'
+                )
               })
           })
       })
@@ -131,7 +163,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Current location"
-              // value={currentLocation}
+              value={currentLocation}
               onChange={e => setCurrentLocation(e.target.value)}
             />
             {/* </div>
@@ -139,7 +171,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Planned destination"
-              // value={plannedDestination}
+              value={plannedDestination}
               onChange={e => setPlannedDestination(e.target.value)}
             />
             <button style={{ display: 'none' }}>submit</button>
@@ -149,60 +181,3 @@ export default function Home() {
     </section>
   )
 }
-
-// export class Home extends Component {
-//   static displayName = Home.name
-
-//   render() {
-//     return (
-//       <div>
-//         <h1>Hello, world!</h1>
-//         <p>Welcome to your new single-page application, built with:</p>
-//         <ul>
-//           <li>
-//             <a href="https://get.asp.net/">ASP.NET Core</a> and{' '}
-//             <a href="https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx">
-//               C#
-//             </a>{' '}
-//             for cross-platform server-side code
-//           </li>
-//           <li>
-//             <a href="https://facebook.github.io/react/">React</a> for
-//             client-side code
-//           </li>
-//           <li>
-//             <a href="http://getbootstrap.com/">Bootstrap</a> for layout and
-//             styling
-//           </li>
-//         </ul>
-//         <p>To help you get started, we have also set up:</p>
-//         <ul>
-//           <li>
-//             <strong>Client-side navigation</strong>. For example, click{' '}
-//             <em>Counter</em> then <em>Back</em> to return here.
-//           </li>
-//           <li>
-//             <strong>Development server integration</strong>. In development
-//             mode, the development server from <code>create-react-app</code> runs
-//             in the background automatically, so your client-side resources are
-//             dynamically built on demand and the page refreshes when you modify
-//             any file.
-//           </li>
-//           <li>
-//             <strong>Efficient production builds</strong>. In production mode,
-//             development-time features are disabled, and your{' '}
-//             <code>dotnet publish</code> configuration produces minified,
-//             efficiently bundled JavaScript files.
-//           </li>
-//         </ul>
-//         <p>
-//           The <code>ClientApp</code> subdirectory is a standard React
-//           application based on the <code>create-react-app</code> template. If
-//           you open a command prompt in that directory, you can run{' '}
-//           <code>npm</code> commands such as <code>npm test</code> or{' '}
-//           <code>npm install</code>.
-//         </p>
-//       </div>
-//     )
-//   }
-// }

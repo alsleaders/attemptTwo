@@ -51,6 +51,15 @@ namespace attempttwo.Controllers
       return location;
     }
 
+    // Patch to change visited
+    [HttpPatch("{id}")]
+    public ActionResult<Location> Patch(int id)
+    {
+      var seenIt = _context.Locations.FirstOrDefault(f => f.Id == id);
+      seenIt.Visited = true;
+      return Ok();
+    }
+
     // PUT: api/Location/5
     [HttpPut("{id}")]
     public async Task<IActionResult> PutLocation(int id, [FromBody] Location location)

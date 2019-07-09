@@ -9,6 +9,7 @@ const TOKEN =
 
 class CurrentDrive extends Component {
   mapRef = {}
+  directionsThing = {}
   // get props from add button on thingsMissed
   state = {
     view: {},
@@ -22,19 +23,64 @@ class CurrentDrive extends Component {
     console.log(this.mapRef)
     let mapboxobj = this.mapRef.getMap()
     console.log({ mapboxobj })
-    mapboxobj.addControl(
-      // eslint-disable-next-line no-undef
-      new MapboxDirections({
-        accessToken: TOKEN
-      }),
-      'top-left'
-    )
+    // eslint-disable-next-line no-undef
+    this.directionsThing = new MapboxDirections({
+      accessToken: TOKEN
+    })
+    mapboxobj.addControl(this.directionsThing, 'top-left')
+
+    console.log('after', { mapboxobj })
+    console.log(this.mapRef)
+
+    this.directionsThing.on('destination', () => {
+      console.log('hey destination!')
+      console.log(this.directionsThing)
+      // console.log(this.directionsThing.actions.addWaypoint())
+
+      console.log(this.directionsThing.actions.queryDestination())
+      console.log(this.directionsThing.getDestination())
+      console.log(this.directionsThing.getOrigin().geometry.coordinates)
+
+      console.log(this.directionsThing.getDestination().geometry.coordinates)
+      // axios
+      //         .post('https://localhost:5001/api/location', {
+      //           Place: MUST FIND NAME TO GO HERE,
+      //           Long: this.directionsThing.getDestination().geometry.coordinates[0],
+      //           Lat: this.directionsThing.getDestination().geometry.coordinates[1],
+      //           Destination: [{ tripId: 2 }]
+      //         })
+      // axios
+      //         .post('https://localhost:5001/api/location', {
+      //           Place: MUST FIND NAME TO GO HERE,
+      //           Long: this.directionsThing.getOrigin().geometry.coordinates[0],
+      //           Lat: this.directionsThing.getOrigin().geometry.coordinates[1],
+      //           Destination: [{ tripId: 2 }]
+      //         })
+    })
+
+    // AMANDA DO NOT FORGET TO SMASH THIS BUG
+    //   this.directionsThing.actions.addWaypoint(1, waypoint(to be acquired from TM page button))
+
+    // this.directionsThing.on('load', () => {
+    //   console.log('hey load!')
+    // })
+    // this.directionsThing.on('selectRoute', () => {
+    //   console.log('hey selectRoute!')
+    // })
+    // this.directionsThing.on('highlightRoute', () => {
+    //   console.log('hey highlightRoute!')
+    // })
+
+    // waypoints.forEach((waypoint, index) => {
+    //   this.directions.addWaypoint(index, waypoint);
+    // });
     axios.get('https://localhost:5001/api/location').then(resp => {
       this.setState({
         mapList: resp.data
       })
     })
   }
+
   render() {
     return (
       <div>
@@ -50,40 +96,7 @@ class CurrentDrive extends Component {
             mapboxApiAccessToken={TOKEN}
             onViewportChange={view => view}
             ref={map => (this.mapRef = map)}
-          >
-            {/* <div style={{ position: 'absolute', right: 0 }}>
-              <Scale />
-            </div> */}
-            {/* {this.state.mapList.map(city => {
-            return (
-              <Marker key={city.id} latitude={city.lat} longitude={city.long}>
-                <button
-                  className="marker"
-                  onClick={e => {
-                    e.preventDefault()
-                    this.setState({
-                      cityInfo: city
-                    })
-                  }}
-                />
-              </Marker>
-            )
-          })}
-
-          {this.state.cityInfo ? (
-            <Popup
-              latitude={this.state.cityInfo.lat}
-              longitude={this.state.cityInfo.long}
-              onClose={() => {
-                this.setState({
-                  cityInfo: null
-                })
-              }}
-            >
-              <h2>{this.state.cityInfo.place}</h2>
-            </Popup>
-          ) : null} */}
-          </ReactMapGL>
+          />
         </section>
       </div>
     )
