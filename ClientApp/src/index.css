@@ -3,6 +3,7 @@ body,
 #root,
 .fullHeight {
   height: 100%;
+  width: 100%;
 }
 
 .mapbox-direction-component {

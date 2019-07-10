@@ -52,8 +52,9 @@ export default function Home() {
           Lat: resp.data.features[0].center[1]
         }
         console.log(thing)
-        setCurrentLocationData({ thing })
-        callback()
+        setCurrentLocationData({ thing }, () => {
+          callback()
+        })
       })
   }
 
@@ -65,12 +66,16 @@ export default function Home() {
       .then(resp => {
         console.log(resp.data)
         console.log(resp.data.features[0].center)
-        setPlannedDestinationData({
-          Place: plannedDestination,
-          Long: resp.data.features[0].center[0],
-          Lat: resp.data.features[0].center[1]
-        })
-        callback()
+        setPlannedDestinationData(
+          {
+            Place: plannedDestination,
+            Long: resp.data.features[0].center[0],
+            Lat: resp.data.features[0].center[1]
+          },
+          () => {
+            callback()
+          }
+        )
       })
     console.log(plannedDestinationData)
   }
@@ -79,14 +84,17 @@ export default function Home() {
     axios
       .post('/api/location', {
         currentLocationData
-        // tripId: tripId
       })
       .then(resp => {
-        console.log('Posting Current Location')
-        setMapData(data => {
-          return data.concat(resp.data)
-        })
-        callback()
+        console.log(resp.data)
+        setMapData(
+          data => {
+            return data.concat(resp.data)
+          },
+          () => {
+            callback()
+          }
+        )
       })
   }
 
@@ -97,11 +105,15 @@ export default function Home() {
         plannedDestinationData
       })
       .then(response => {
-        console.log('Posting Planned Destination')
-        setMapData(data => {
-          return data.concat(response.data)
-        })
-        callback()
+        console.log(response.data)
+        setMapData(
+          data => {
+            return data.concat(response.data)
+          },
+          () => {
+            callback()
+          }
+        )
       })
   }
 
@@ -111,9 +123,15 @@ export default function Home() {
         'https://api.mapbox.com/directions/v5/mapbox/driving/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aW10cjkwMmR4NDNsZ2NoaWI0OGx3In0.xMNCyuPZyAjV6M8iX-fdJA'
       )
       .then(resp => {
-        console.log(resp.data, 'this should be the geocoding line')
-        setRoute({ route: resp.data })
-        callback()
+        console.log(resp.data)
+        setRoute(
+          {
+            route: resp.data
+          },
+          () => {
+            callback()
+          }
+        )
       })
   }
 
@@ -138,6 +156,8 @@ export default function Home() {
       }
     ])
 
+    setCurrentLocation('')
+    setPlannedDestination('')
     // axios.get(
     //   `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${
     //     currentLocationData.Long
@@ -150,77 +170,4 @@ export default function Home() {
     console.log(currentLocation)
     console.log(currentLocationData, 'is this a thing?')
     console.log('helllllllo')
-    setCurrentLocation('')
-    setPlannedDestination('')
   }
-  return (
-    <section>
-      <section className="mapView">
-        <ReactMapGL
-          {...view}
-          width="60"
-          height="60vh"
-          mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
-          mapboxApiAccessToken={TOKEN}
-          onViewportChange={view => {
-            setView(view)
-          }}
-          // ref={map => (this.mapRef = map)}
-        >
-          <div style={{ position: 'absolute', left: 0 }}>
-            <NavigationControl />
-          </div>
-          {mapData.map(city => {
-            return (
-              <Marker key={city.id} latitude={city.lat} longitude={city.long}>
-                <button
-                  className="marker"
-                  onClick={e => {
-                    e.preventDefault()
-                    setSelectedInfo(city)
-                  }}
-                />
-              </Marker>
-            )
-          })}
-
-          {selectedInfo ? (
-            <Popup
-              latitude={selectedInfo.lat}
-              longitude={selectedInfo.long}
-              onClose={() => {
-                setSelectedInfo(null)
-              }}
-            >
-              <h2>{selectedInfo.place}</h2>
-            </Popup>
-          ) : null}
-        </ReactMapGL>
-      </section>
-
-      <hr />
-      <section className="input-fields">
-        <h3>Input your location and destination</h3>
-        <div className="input-column">
-          <form onSubmit={planTrip}>
-            <input
-              type="text"
-              placeholder="Current location"
-              value={currentLocation}
-              onChange={e => setCurrentLocation(e.target.value)}
-            />
-            {/* </div>
-        <div className="input-column"> */}
-            <input
-              type="text"
-              placeholder="Planned destination"
-              value={plannedDestination}
-              onChange={e => setPlannedDestination(e.target.value)}
-            />
-            <button style={{ display: 'none' }}>submit</button>
-          </form>
-        </div>
-      </section>
-    </section>
-  )
-}

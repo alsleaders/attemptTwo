@@ -13,7 +13,7 @@ export default function PastDrive() {
 
   const goGetList = e => {
     e.preventDefault()
-    axios.get('https://localhost:5001/api/trip/' + tripId).then(resp => {
+    axios.get('/api/trip/' + tripId).then(resp => {
       console.log(resp.data)
       console.log(resp.data.destinations)
       setSeenLocations(resp.data.destinations)

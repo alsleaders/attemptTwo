@@ -6,7 +6,7 @@ export default function ThingsMissed() {
   const [mapList, setMapList] = useState([])
 
   useEffect(() => {
-    axios.get('https://localhost:5001/api/location/visited').then(resp => {
+    axios.get('/api/location/visited').then(resp => {
       console.log(resp.data)
       setMapList(resp.data)
     })
@@ -21,7 +21,7 @@ export default function ThingsMissed() {
 
   const deleteFromTable = itemId => {
     console.log(itemId)
-    axios.delete(`https://localhost:5001/api/location/${itemId}`).then(resp => {
+    axios.delete(`/api/location/${itemId}`).then(resp => {
       console.log(resp.data)
       setMapList(oldList => oldList.filter(item => item.id !== itemId))
       console.log('delete works')
@@ -30,7 +30,7 @@ export default function ThingsMissed() {
 
   const updateVisited = itemId => {
     console.log(itemId)
-    axios.patch(`https://localhost:5001/api/location/${itemId}`).then(resp => {
+    axios.patch(` /api/location/${itemId}`).then(resp => {
       setMapList(oldList => oldList.filter(item => item.id !== itemId))
       console.log('visited updated')
     })

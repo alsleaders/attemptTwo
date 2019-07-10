@@ -1,6 +1,6 @@
 dotnet publish -c Release 
 
-cp dockerfile ./bin/release/netcoreapp2.2/publish
+xcopy /y dockerfile .\bin\release\netcoreapp2.2\publish
 
 docker build -t oh-the-places-you-image ./bin/release/netcoreapp2.2/publish
 

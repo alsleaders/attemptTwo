@@ -43,14 +43,14 @@ class CurrentDrive extends Component {
 
       console.log(this.directionsThing.getDestination().geometry.coordinates)
       // axios
-      //         .post('https://localhost:5001/api/location', {
+      //         .post('/api/location', {
       //           Place: MUST FIND NAME TO GO HERE,
       //           Long: this.directionsThing.getDestination().geometry.coordinates[0],
       //           Lat: this.directionsThing.getDestination().geometry.coordinates[1],
       //           Destination: [{ tripId: 2 }]
       //         })
       // axios
-      //         .post('https://localhost:5001/api/location', {
+      //         .post('/api/location', {
       //           Place: MUST FIND NAME TO GO HERE,
       //           Long: this.directionsThing.getOrigin().geometry.coordinates[0],
       //           Lat: this.directionsThing.getOrigin().geometry.coordinates[1],
@@ -74,7 +74,7 @@ class CurrentDrive extends Component {
     // waypoints.forEach((waypoint, index) => {
     //   this.directions.addWaypoint(index, waypoint);
     // });
-    axios.get('https://localhost:5001/api/location').then(resp => {
+    axios.get('/api/location').then(resp => {
       this.setState({
         mapList: resp.data
       })
