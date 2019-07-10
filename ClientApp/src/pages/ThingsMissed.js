@@ -12,13 +12,12 @@ export default function ThingsMissed() {
     })
   }, [])
 
-  const addToCurrentTrip = itemId => {
-    // pass in item
-    // get long and lat
-    // add as a waypoint to the current trip
-
-    console.log('add button works')
-  }
+  // const addToCurrentTrip = itemId => {
+  // pass in item
+  // get long and lat
+  // add as a waypoint to the current trip
+  //   console.log('add button works')
+  // }
 
   const deleteFromTable = itemId => {
     console.log(itemId)
@@ -41,7 +40,7 @@ export default function ThingsMissed() {
     <section className="things-missed">
       <h1>These are some of the things you've missed</h1>
       <p className="instructions">
-        Feel free to add to your current trip, keep a running list of places you
+        Feel free to track places you've been, keep a running list of places you
         want to go back to, or admit that your priorities change and you really
         aren't going to try and make it back to that cool place you heard about
         that once. <br />
@@ -50,38 +49,38 @@ export default function ThingsMissed() {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Add to Trip?</th>
+            {/* <th>Add to Trip?</th> */}
             <th>Point of Interest</th>
-            <th>Not worried about it?</th>
             <th>Been there?</th>
+            <th>Not worried about it?</th>
           </tr>
         </thead>
         <tbody>
           {mapList.map(item => (
             <tr key={item.id}>
-              <td>
+              {/* <td>
                 <button
                   className="button"
                   onClick={() => addToCurrentTrip(item.id)}
                 >
                   Add
                 </button>
-              </td>
+              </td> */}
               <td>{item.place}</td>
-              <td>
-                <button
-                  className="button"
-                  onClick={() => deleteFromTable(item.id)}
-                >
-                  Delete
-                </button>
-              </td>
               <td>
                 <button
                   className="button"
                   onClick={() => updateVisited(item.id)}
                 >
                   Done That
+                </button>
+              </td>
+              <td>
+                <button
+                  className="button"
+                  onClick={() => deleteFromTable(item.id)}
+                >
+                  Delete
                 </button>
               </td>
             </tr>
