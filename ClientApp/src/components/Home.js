@@ -4,9 +4,14 @@ import '../CSS/Home.css'
 import axios from 'axios'
 import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import waterfall from 'async/waterfall'
 
 const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
+
+function callback(e) {
+  return e
+}
 
 export default function Home() {
   // let mapRef = {}
@@ -15,7 +20,7 @@ export default function Home() {
     // this is up to 90
     longitude: -82.4572,
     // this is up to 180
-    zoom: 2
+    zoom: 4
   })
   const [selectedInfo, setSelectedInfo] = useState(null)
   const [mapData, setMapData] = useState([])
@@ -23,6 +28,7 @@ export default function Home() {
   const [currentLocationData, setCurrentLocationData] = useState({})
   const [plannedDestination, setPlannedDestination] = useState('')
   const [plannedDestinationData, setPlannedDestinationData] = useState({})
+  const [route, setRoute] = useState({})
 
   useEffect(() => {
     axios.get('https://localhost:5001/api/location').then(resp => {
@@ -31,83 +37,139 @@ export default function Home() {
     })
   }, [])
 
-  const planTrip = e => {
-    e.preventDefault()
-    console.log('submitting')
+  const getCurrentLoc = callback => {
     let thing = {}
     axios
       .get(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${currentLocation}.json?access_token=${TOKEN}`
       )
-      .then(currentLocationResp => {
-        console.log(currentLocationResp.data)
-        console.log(currentLocationResp.data.features[0].center)
+      .then(resp => {
+        console.log(resp.data)
+        console.log(resp.data.features[0].center)
         thing = {
           Place: currentLocation,
-          Long: currentLocationResp.data.features[0].center[0],
-          Lat: currentLocationResp.data.features[0].center[1]
+          Long: resp.data.features[0].center[0],
+          Lat: resp.data.features[0].center[1]
         }
-        setCurrentLocationData(thing)
-        axios
-          .get(
-            `https://api.mapbox.com/geocoding/v5/mapbox.places/${plannedDestination}.json?access_token=${TOKEN}`
-          )
-          .then(plannedDestinationResp => {
-            console.log(plannedDestinationResp.data)
-            console.log(plannedDestinationResp.data.features[0].center)
-            setPlannedDestinationData({
-              Place: plannedDestination,
-              Long: plannedDestinationResp.data.features[0].center[0],
-              Lat: plannedDestinationResp.data.features[0].center[1]
-            })
-            axios
-              .post('https://localhost:5001/api/location', {
-                Place: currentLocation,
-                Long: currentLocationResp.data.features[0].center[0],
-                Lat: currentLocationResp.data.features[0].center[1],
-                Destination: [{ tripId: 2 }]
-              })
-              .then(resp => {
-                console.log(resp.data)
-                setMapData(data => {
-                  return data.concat(resp.data)
-                })
-              })
-            axios
-              .post('https://localhost:5001/api/location', {
-                Place: plannedDestination,
-                Long: plannedDestinationResp.data.features[0].center[0],
-                Lat: plannedDestinationResp.data.features[0].center[1],
-                Destination: [{ tripId: 2 }]
-              })
-              .then(response => {
-                console.log(response.data)
-                setMapData(data => {
-                  return data.concat(response.data)
-                })
-                // setCurrentLocation('')
-                // setPlannedDestination('')
-                // axios.get(
-                //   `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${
-                //     currentLocationData.Long
-                //   }%2C${currentLocationData.Lat}%3B${
-                //     plannedDestinationData.Long
-                //   }%2C${
-                //     plannedDestinationData.Lat
-                //   }.json?geometries=polyline&steps=true&overview=full&access_token=${TOKEN}`
-                // )
-                console.log(currentLocation)
-                console.log(currentLocationData)
-                console.log(thing)
-                console.log('helllllllo')
-                axios.get(
-                  'https://api.mapbox.com/directions/v5/mapbox/driving/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aW10cjkwMmR4NDNsZ2NoaWI0OGx3In0.xMNCyuPZyAjV6M8iX-fdJA'
-                )
-              })
-          })
+        console.log(thing)
+        setCurrentLocationData({ thing }, () => {
+          callback()
+        })
       })
+  }
 
-    // add to your mapboxgl map
+  const getPlannedDes = callback => {
+    axios
+      .get(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${plannedDestination}.json?access_token=${TOKEN}`
+      )
+      .then(resp => {
+        console.log(resp.data)
+        console.log(resp.data.features[0].center)
+        setPlannedDestinationData(
+          {
+            Place: plannedDestination,
+            Long: resp.data.features[0].center[0],
+            Lat: resp.data.features[0].center[1]
+          },
+          () => {
+            callback()
+          }
+        )
+      })
+    console.log(plannedDestinationData)
+  }
+
+  const postCLToDB = callback => {
+    axios
+      .post('https://localhost:5001/api/location', {
+        currentLocationData
+      })
+      .then(resp => {
+        console.log(resp.data)
+        setMapData(
+          data => {
+            return data.concat(resp.data)
+          },
+          () => {
+            callback()
+          }
+        )
+      })
+  }
+
+  const postPDtoDB = callback => {
+    console.log(plannedDestinationData)
+    axios
+      .post('https://localhost:5001/api/location', {
+        plannedDestinationData
+      })
+      .then(response => {
+        console.log(response.data)
+        setMapData(
+          data => {
+            return data.concat(response.data)
+          },
+          () => {
+            callback()
+          }
+        )
+      })
+  }
+
+  const getTheLine = callback => {
+    axios
+      .get(
+        'https://api.mapbox.com/directions/v5/mapbox/driving/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aW10cjkwMmR4NDNsZ2NoaWI0OGx3In0.xMNCyuPZyAjV6M8iX-fdJA'
+      )
+      .then(resp => {
+        console.log(resp.data)
+        setRoute(
+          {
+            route: resp.data
+          },
+          () => {
+            callback()
+          }
+        )
+      })
+  }
+
+  const planTrip = e => {
+    e.preventDefault()
+    console.log('submitting')
+    waterfall([
+      callback => {
+        getCurrentLoc(callback)
+      },
+      callback => {
+        getPlannedDes(callback)
+      },
+      callback => {
+        postCLToDB(callback)
+      },
+      callback => {
+        postPDtoDB(callback)
+      },
+      callback => {
+        getTheLine(callback)
+      }
+    ])
+
+    // setCurrentLocation('')
+    // setPlannedDestination('')
+    // axios.get(
+    //   `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${
+    //     currentLocationData.Long
+    //   }%2C${currentLocationData.Lat}%3B${
+    //     plannedDestinationData.Long
+    //   }%2C${
+    //     plannedDestinationData.Lat
+    //   }.json?geometries=polyline&steps=true&overview=full&access_token=${TOKEN}`
+    // )
+    console.log(currentLocation)
+    console.log(currentLocationData, 'is this a thing?')
+    console.log('helllllllo')
   }
 
   return (
