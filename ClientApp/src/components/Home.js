@@ -156,8 +156,8 @@ export default function Home() {
       }
     ])
 
-    // setCurrentLocation('')
-    // setPlannedDestination('')
+    setCurrentLocation('')
+    setPlannedDestination('')
     // axios.get(
     //   `https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${
     //     currentLocationData.Long
