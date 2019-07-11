@@ -121,6 +121,7 @@ class NewHome extends Component {
       })
       .then(resp => {
         console.log('Posting Current Location')
+        console.log(this.state.currentLocationData)
         this.setState({
           mapData: this.state.mapData.concat(resp.data)
         })
@@ -132,10 +133,11 @@ class NewHome extends Component {
     // console.log(plannedDestinationData)
     axios
       .post('/api/location', {
-        location: this.state.currentLocationData
+        plannedDestinationData: this.state.plannedDestinationData
       })
       .then(response => {
         console.log('Posting Planned Destination')
+        console.log(this.state.plannedDestinationData)
         this.setState({
           mapData: this.state.mapData.concat(response.data)
         })
@@ -146,13 +148,25 @@ class NewHome extends Component {
   getTheLine = callback => {
     axios
       .get(
-        'https://api.mapbox.com/directions/v5/mapbox/driving/-73.989%2C40.733%3B-74%2C40.733.json?access_token=pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aW10cjkwMmR4NDNsZ2NoaWI0OGx3In0.xMNCyuPZyAjV6M8iX-fdJA'
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${
+          this.state.currentLocationData.Long
+        }%2C${this.state.currentLocationData.Lat}%3B${
+          this.state.plannedDestinationData.Long
+        }%2C${this.state.plannedDestinationData.Lat}.json?access_token=${TOKEN}`
       )
       .then(resp => {
-        console.log(resp.data, 'this should be the geocoding line')
+        console.log(
+          resp.data.waypoints[0].location,
+          'this should be the geocoding coordinates for the first? location'
+        )
+        console.log(
+          resp.data.waypoints[1].location,
+          'this should be the geocoding coordinates for the second? location'
+        )
+
         this.setState({ route: resp.data })
         var startPoint = [-113.787, 47.7596]
-
+        // add point 1
         this.state.map.addSource('point1', {
           type: 'geojson',
           data: {
@@ -168,16 +182,26 @@ class NewHome extends Component {
           source: 'point1',
           type: 'circle',
           paint: {
-            'circle-radius': 25,
+            'circle-radius': 10,
             'circle-radius-transition': {
-              duration: 0
+              duration: 5
             },
             'circle-opacity-transition': {
-              duration: 0
+              duration: 5
             },
             'circle-color': '#007cbf'
           }
         })
+        this.state.map.addLayer({
+          id: 'point1',
+          source: 'point1',
+          type: 'circle',
+          paint: {
+            'circle-radius': 10,
+            'circle-color': '#007cbf'
+          }
+        })
+        // add point 2
         this.state.map.addSource('point2', {
           type: 'geojson',
           data: {
@@ -193,12 +217,12 @@ class NewHome extends Component {
           source: 'point2',
           type: 'circle',
           paint: {
-            'circle-radius': 25,
+            'circle-radius': 10,
             'circle-radius-transition': {
-              duration: 0
+              duration: 5
             },
             'circle-opacity-transition': {
-              duration: 0
+              duration: 5
             },
             'circle-color': '#007cbf'
           }
@@ -219,7 +243,15 @@ class NewHome extends Component {
             'line-width': 2
           }
         })
-
+        this.state.map.addLayer({
+          id: 'point2',
+          source: 'point2',
+          type: 'circle',
+          paint: {
+            'circle-radius': 10,
+            'circle-color': '#007cbf'
+          }
+        })
         callback()
       })
   }
