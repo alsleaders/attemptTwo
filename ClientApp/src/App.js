@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { Route } from 'react-router'
 import { Layout } from './components/Layout'
+import FetchData from './components/FetchData'
 import Home from './components/Home'
 import CurrentDrive from './pages/CurrentDrive'
 import PastDrive from './pages/PastDrive'
 import ThingsMissed from './pages/ThingsMissed'
+import NewHome from './components/NewHome'
 import './index.css'
 export default class App extends Component {
   static displayName = App.name
@@ -12,7 +14,7 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={NewHome} />
         <Route path="/CurrentDrive" component={CurrentDrive} />
         <Route path="/PastDrive" component={PastDrive} />
         <Route path="/ThingsMissed" component={ThingsMissed} />
