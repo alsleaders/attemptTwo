@@ -14,3 +14,7 @@ body,
   width: 75%;
   z-index: 1;
 }
+
+.mapView {
+  border: 0.5rem inset black;
+}

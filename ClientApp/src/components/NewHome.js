@@ -332,6 +332,9 @@ class NewHome extends Component {
   render() {
     return (
       <section>
+        <header>
+          <h1>Start your Trip</h1>
+        </header>
         <section className="mapView" id="mapView">
           <ReactMapGL
             {...this.state.viewport}
