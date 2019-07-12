@@ -124,9 +124,9 @@ class NewHome extends Component {
       )
       .then(resp => {
         console.log('Posting Current Location', this.state.currentLocationData)
-        this.setState({
-          mapData: this.state.mapData.concat(resp.data)
-        })
+        // this.setState({
+        //   mapData: this.state.mapData.concat(resp.data)
+        // })
         callback()
       })
   }
@@ -140,9 +140,9 @@ class NewHome extends Component {
           'Posting Planned Destination',
           this.state.plannedDestinationData
         )
-        this.setState({
-          mapData: this.state.mapData.concat(response.data)
-        })
+        // this.setState({
+        //   mapData: this.state.mapData.concat(response.data)
+        // })
         callback()
       })
   }

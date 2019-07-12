@@ -3,7 +3,7 @@ import { Route } from 'react-router'
 import { Layout } from './components/Layout'
 import FetchData from './components/FetchData'
 import Home from './components/Home'
-import CurrentDrive from './pages/CurrentDrive'
+import GetDirections from './pages/GetDirections'
 import PastDrive from './pages/PastDrive'
 import ThingsMissed from './pages/ThingsMissed'
 import NewHome from './components/NewHome'
@@ -15,7 +15,7 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path="/" component={NewHome} />
-        <Route path="/CurrentDrive" component={CurrentDrive} />
+        <Route path="/GetDirections" component={GetDirections} />
         <Route path="/PastDrive" component={PastDrive} />
         <Route path="/ThingsMissed" component={ThingsMissed} />
       </Layout>

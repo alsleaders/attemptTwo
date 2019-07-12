@@ -53,8 +53,8 @@ export class NavMenu extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/CurrentDrive">
-                    Current Drive
+                  <NavLink tag={Link} className="text-dark" to="/GetDirections">
+                    Get Directions
                   </NavLink>
                 </NavItem>
                 <NavItem>
