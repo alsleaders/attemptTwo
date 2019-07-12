@@ -26,7 +26,6 @@ export default function ThingsMissed() {
       setMapList(oldList => oldList.filter(item => item.id !== itemId))
       console.log('delete works')
     })
-    updateVisited()
   }
 
   const updateVisited = itemId => {

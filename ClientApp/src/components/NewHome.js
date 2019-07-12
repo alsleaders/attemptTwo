@@ -16,27 +16,24 @@ function callback(e) {
 
 let tripId = 1
 
-var geojson = {
-  type: 'FeatureCollection',
-  features: [
-    {
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: []
-      }
-    }
-  ]
-}
+var framesPerSecond = 20
+var initialOpacity = 1
+var opacity = initialOpacity
+var initialRadius = 4
+var radius = initialRadius
+var maxRadius = 15
+var lineCoordinates = []
+var speedFactor = 100 // number of frames per longitude degree
+var animation // to store and cancel the animation
 
 class NewHome extends Component {
   mapRef = {}
   state = {
     viewport: {
-      zoom: 3,
-      latitude: 27.9506,
+      zoom: 4,
+      latitude: 28.46,
       // this is up to 90
-      longitude: -82.4572
+      longitude: -81.35
       // this is up to 180
     },
     map: {},
@@ -49,7 +46,9 @@ class NewHome extends Component {
     route: {},
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v9',
-    center: [-122.486052, 37.830348]
+    center: [-122.486052, 37.830348],
+    startPoint: [],
+    endPoint: []
   }
 
   componentDidMount() {
@@ -82,6 +81,7 @@ class NewHome extends Component {
         console.log(resp.data)
         console.log(resp.data.features[0].center)
         this.setState({
+          startPoint: resp.data.features[0].center,
           currentLocationData: {
             Place: this.state.currentLocation,
             Long: resp.data.features[0].center[0],
@@ -103,6 +103,7 @@ class NewHome extends Component {
         console.log(resp.data)
         console.log(resp.data.features[0].center)
         this.setState({
+          endPoint: resp.data.features[0].center,
           plannedDestinationData: {
             Place: this.state.plannedDestination,
             Long: resp.data.features[0].center[0],
@@ -115,13 +116,14 @@ class NewHome extends Component {
 
   postCLToDB = callback => {
     axios
-      .post('/api/location', {
-        currentLocationData: this.state.currentLocationData
+      .post(
+        '/api/location',
+        this.state.currentLocationData
+
         // tripId: tripId
-      })
+      )
       .then(resp => {
-        console.log('Posting Current Location')
-        console.log(this.state.currentLocationData)
+        console.log('Posting Current Location', this.state.currentLocationData)
         this.setState({
           mapData: this.state.mapData.concat(resp.data)
         })
@@ -132,12 +134,12 @@ class NewHome extends Component {
   postPDtoDB = callback => {
     // console.log(plannedDestinationData)
     axios
-      .post('/api/location', {
-        plannedDestinationData: this.state.plannedDestinationData
-      })
+      .post('/api/location', this.state.plannedDestinationData)
       .then(response => {
-        console.log('Posting Planned Destination')
-        console.log(this.state.plannedDestinationData)
+        console.log(
+          'Posting Planned Destination',
+          this.state.plannedDestinationData
+        )
         this.setState({
           mapData: this.state.mapData.concat(response.data)
         })
@@ -164,17 +166,14 @@ class NewHome extends Component {
           'this should be the geocoding coordinates for the second? location'
         )
 
-        this.setState({ route: resp.data })
-        var startPoint = [-113.787, 47.7596]
+        this.setState({ route: resp.data.waypoints[0] })
+        // var startPoint = [-113.787, 47.7596]
         // add point 1
         this.state.map.addSource('point1', {
           type: 'geojson',
           data: {
             type: 'Point',
-            coordinates: [
-              this.state.currentLocationData.Long,
-              this.state.currentLocationData.Lat
-            ]
+            coordinates: [this.state.startPoint[0], this.state.startPoint[1]]
           }
         })
         this.state.map.addLayer({
@@ -206,10 +205,7 @@ class NewHome extends Component {
           type: 'geojson',
           data: {
             type: 'Point',
-            coordinates: [
-              this.state.plannedDestinationData.Long,
-              this.state.plannedDestinationData.Lat
-            ]
+            coordinates: [this.state.endPoint[0], this.state.endPoint[1]]
           }
         })
         this.state.map.addLayer({
@@ -227,33 +223,84 @@ class NewHome extends Component {
             'circle-color': '#007cbf'
           }
         })
+
+        var diffX = this.state.endPoint[0] - this.state.startPoint[0]
+        var diffY = this.state.endPoint[1] - this.state.startPoint[1]
+
+        var sfX = diffX / speedFactor
+        var sfY = diffY / speedFactor
+
+        var i = 0
+        var j = 0
+
+        while (i < diffX || Math.abs(j) < Math.abs(diffY)) {
+          lineCoordinates.push([
+            this.state.startPoint[0] + i,
+            this.state.startPoint[1] + j
+          ])
+
+          if (i < diffX) {
+            i += sfX
+          }
+
+          if (Math.abs(j) < Math.abs(diffY)) {
+            j += sfY
+          }
+        }
+
+        console.log(lineCoordinates)
+
         this.state.map.addLayer({
-          id: 'line-animation',
+          id: 'route',
           type: 'line',
           source: {
             type: 'geojson',
-            data: geojson
+            data: {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates: lineCoordinates
+              }
+            }
           },
-          layout: {
-            'line-cap': 'round',
-            'line-join': 'round'
-          },
+          layout: {},
           paint: {
-            'line-color': '#ffffff',
-            'line-width': 2
+            'line-color': '#a9bcd0',
+            'line-width': 3
           }
         })
-        this.state.map.addLayer({
-          id: 'point2',
-          source: 'point2',
-          type: 'circle',
-          paint: {
-            'circle-radius': 10,
-            'circle-color': '#007cbf'
-          }
-        })
-        callback()
       })
+
+    // var animationCounter = 0
+
+    // function animateLine() {
+    //   if (animationCounter < lineCoordinates.length) {
+    //     geojson.features[0].geometry.coordinates.push(
+    //       lineCoordinates[animationCounter]
+    //     )
+    //     this.state.map.getSource('line-animation').setData(geojson)
+
+    //     requestAnimationFrame(animateLine)
+    //     animationCounter++
+    //   } else {
+    //     var coord = geojson.features[0].geometry.coordinates
+    //     coord.shift()
+    //     console.log(coord)
+
+    //     if (coord.length > 0) {
+    //       geojson.features[0].geometry.coordinates = coord
+    //       this.state.map.getSource('line-animation').setData(geojson)
+
+    //       //-------------- Point2 Animation End ---------------
+    //       requestAnimationFrame(animateLine)
+    //     }
+    //   }
+    // }
+
+    // animateLine()
+
+    callback()
   }
 
   planTrip = e => {

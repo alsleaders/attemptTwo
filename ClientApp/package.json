@@ -20,16 +20,13 @@
     "react-mapbox-gl-draw": "^2.0.1",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
-    "react-script": "^2.0.5",
-    "react-scripts": "^1.1.5",
+    "react-scripts": "^3.0.1",
     "reactstrap": "^6.3.0",
     "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "ajv": "^6.0.0",
-    "babel-eslint": "^7.2.3",
     "cross-env": "^5.2.0",
-    "eslint": "^4.1.1",
     "eslint-config-react-app": "^2.1.0",
     "eslint-plugin-flowtype": "^2.50.3",
     "eslint-plugin-import": "^2.14.0",
@@ -44,7 +41,8 @@
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "lint": "eslint ./src/"
+    "lint": "eslint ./src/",
+    "clean": "rm -Recurse -Force .\node_modules"
   },
   "browserslist": {
     "production": [

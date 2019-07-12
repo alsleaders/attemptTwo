@@ -13,8 +13,9 @@ html {
   --main-accent-color: #699bd1;
   --main-font-color: #373f51;
 }
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .navbar-expand-sm {
+    background: no-repeat center url('../Images/Suess2.jpg');
     /* width: auto; */
   }
   html {

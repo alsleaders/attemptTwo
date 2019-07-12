@@ -57,7 +57,8 @@ namespace attempttwo.Controllers
     {
       var seenIt = _context.Locations.FirstOrDefault(f => f.Id == id);
       seenIt.Visited = true;
-      return Ok();
+      _context.SaveChanges();
+      return Ok(seenIt);
     }
 
     // PUT: api/Location/5
