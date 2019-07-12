@@ -23,6 +23,11 @@ h3 {
   text-align: center;
 }
 
+h5 {
+  text-align: center;
+  padding: 0.75rem;
+}
+
 .overlays {
   height: 90%;
   width: 100%;

@@ -101,6 +101,8 @@ class GetDirections extends Component {
       <div>
         <header>
           <h1>Get Directions</h1>
+          <h3>Get turn by turn directions, so you don't get lost</h3>
+          <h5>Unless you want to get lost</h5>
         </header>
         <section className="mapView" id="mapView">
           <ReactMapGL

@@ -381,7 +381,7 @@ class NewHome extends Component {
         </section>
         <hr />
         <section className="input-fields">
-          <h3>Input your location and destination</h3>
+          <h3>Where did you come from? Where did you go?</h3>
           <div className="input-column">
             <form onSubmit={this.planTrip}>
               <input
