@@ -43,7 +43,7 @@ export default function ThingsMissed() {
         Feel free to track places you've been, keep a running list of places you
         want to go back to, or admit that your priorities change and you really
         aren't going to try and make it back to that cool place you heard about
-        that once. <br />
+        that once and take it off the list. <br />
         Anything goes.
       </p>
       <table className="table table-striped">

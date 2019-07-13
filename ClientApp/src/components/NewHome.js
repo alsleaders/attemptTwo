@@ -14,8 +14,6 @@ function callback(e) {
   return e
 }
 
-let tripId = 1
-
 var framesPerSecond = 20
 var initialOpacity = 1
 var opacity = initialOpacity
@@ -48,7 +46,8 @@ class NewHome extends Component {
     style: 'mapbox://styles/mapbox/streets-v9',
     center: [-122.486052, 37.830348],
     startPoint: [],
-    endPoint: []
+    endPoint: [],
+    tripNumber: 0
   }
 
   componentDidMount() {
@@ -69,8 +68,25 @@ class NewHome extends Component {
     })
   }
 
+  makeNewTrip = callback => {
+    axios
+      .post('/api/trip', {
+        StartDate: '2019-07-26',
+        EndDate: '2019-07-28'
+      })
+      .then(resp => {
+        console.log(resp.data)
+        console.log(resp.data.id)
+        axios
+          .post('/api/destination', { tripId: resp.data.id })
+          .then(response => {
+            console.log(response.data)
+            callback()
+          })
+      })
+  }
+
   getCurrentLoc = callback => {
-    tripId += tripId
     axios
       .get(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${
@@ -115,24 +131,16 @@ class NewHome extends Component {
   }
 
   postCLToDB = callback => {
-    axios
-      .post(
-        '/api/location',
-        this.state.currentLocationData
-
-        // tripId: tripId
-      )
-      .then(resp => {
-        console.log('Posting Current Location', this.state.currentLocationData)
-        // this.setState({
-        //   mapData: this.state.mapData.concat(resp.data)
-        // })
-        callback()
-      })
+    axios.post('/api/location', this.state.currentLocationData).then(resp => {
+      console.log('Posting Current Location', this.state.currentLocationData)
+      // this.setState({
+      //   mapData: this.state.mapData.concat(resp.data)
+      // })
+      callback()
+    })
   }
 
   postPDtoDB = callback => {
-    // console.log(plannedDestinationData)
     axios
       .post('/api/location', this.state.plannedDestinationData)
       .then(response => {
@@ -239,7 +247,7 @@ class NewHome extends Component {
             this.state.startPoint[1] + j
           ])
 
-          if (i < diffX) {
+          if (Math.abs(i) < Math.abs(diffX)) {
             i += sfX
           }
 
@@ -248,7 +256,7 @@ class NewHome extends Component {
           }
         }
 
-        console.log(lineCoordinates)
+        console.log({ lineCoordinates })
 
         this.state.map.addLayer({
           id: 'route',
@@ -308,6 +316,9 @@ class NewHome extends Component {
     console.log('submitting')
     waterfall([
       callback => {
+        this.makeNewTrip(callback)
+      },
+      callback => {
         this.getCurrentLoc(callback)
       },
       callback => {
@@ -323,12 +334,14 @@ class NewHome extends Component {
         this.getTheLine(callback)
       }
     ])
-    // this.setState({
-    //   currentLocation: '',
-    //   plannedDestination: ''
-    // })
   }
 
+  clearInputs = () => {
+    this.setState({
+      currentLocation: '',
+      plannedDestination: ''
+    })
+  }
   render() {
     return (
       <section>
@@ -404,8 +417,10 @@ class NewHome extends Component {
                   })
                 }
               />
-              <button style={{ display: 'none' }}>submit</button>
+              <button>submit</button>
+              {/* style={{ display: 'none' }} */}
             </form>
+            <button onClick={this.clearInputs}>Clear</button>
           </div>
         </section>
       </section>
