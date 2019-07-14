@@ -60,12 +60,12 @@ class NewHome extends Component {
     console.log(this.mapRef)
     this.setState({ map: this.mapRef.getMap() })
 
-    // axios.get('/api/location').then(resp => {
-    //   console.log(resp.data)
-    //   this.setState({
-    //     mapData: resp.data
-    //   })
-    // })
+    axios.get('/api/location').then(resp => {
+      console.log(resp.data)
+      this.setState({
+        mapData: resp.data
+      })
+    })
   }
 
   makeNewTrip = callback => {

@@ -3,7 +3,7 @@ import '../CSS/CurrentDrive.css'
 // import Script from 'react-sscript'
 import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
-import ReactMapGL, { GeoJSONlayer } from 'react-map-gl'
+import ReactMapGL, { NavigationControl } from 'react-map-gl'
 
 const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
@@ -113,7 +113,11 @@ class GetDirections extends Component {
             mapboxApiAccessToken={TOKEN}
             onViewportChange={vp => this.setState({ viewport: vp })}
             ref={map => (this.mapRef = map)}
-          />
+          >
+            <div style={{ position: 'absolute', left: 0 }}>
+              <NavigationControl />
+            </div>
+          </ReactMapGL>
         </section>
       </div>
     )
