@@ -36,7 +36,7 @@ h5 {
 
 input {
   text-align: center;
-  margin: 1rem;
+  margin: 1rem 1rem 1rem 0;
 }
 
 .input-column {
@@ -50,4 +50,8 @@ input {
   width: 1rem;
   border-radius: 1rem;
   background: rgb(219, 12, 12);
+}
+
+.clear-button {
+  margin: 0 0 0 1rem;
 }

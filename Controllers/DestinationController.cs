@@ -21,7 +21,7 @@ namespace attempttwo.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Destination>>> GetDestination()
     {
-      return await _context.Destinations.ToListAsync();
+      return await _context.Destinations.Include(i => i.Location).Include(i => i.Trip).ToListAsync();
     }
 
 

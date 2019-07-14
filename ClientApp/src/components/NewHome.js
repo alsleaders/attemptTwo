@@ -60,12 +60,12 @@ class NewHome extends Component {
     console.log(this.mapRef)
     this.setState({ map: this.mapRef.getMap() })
 
-    axios.get('/api/location').then(resp => {
-      console.log(resp.data)
-      this.setState({
-        mapData: resp.data
-      })
-    })
+    // axios.get('/api/location').then(resp => {
+    //   console.log(resp.data)
+    //   this.setState({
+    //     mapData: resp.data
+    //   })
+    // })
   }
 
   makeNewTrip = callback => {
@@ -336,7 +336,8 @@ class NewHome extends Component {
     ])
   }
 
-  clearInputs = () => {
+  clearInputs = e => {
+    e.preventDefault()
     this.setState({
       currentLocation: '',
       plannedDestination: ''
@@ -417,10 +418,12 @@ class NewHome extends Component {
                   })
                 }
               />
-              <button>submit</button>
+              <button>Submit</button>
               {/* style={{ display: 'none' }} */}
+              <button className="clear-button" onClick={this.clearInputs}>
+                Clear
+              </button>
             </form>
-            <button onClick={this.clearInputs}>Clear</button>
           </div>
         </section>
       </section>

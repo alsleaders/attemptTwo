@@ -10,16 +10,7 @@ export default function PastDrive() {
   const [seenLocations, setSeenLocations] = useState([])
   const [tripId, setTripId] = useState('')
   const [selectedInfo, setSelectedInfo] = useState(null)
-
-  const goGetList = e => {
-    e.preventDefault()
-    axios.get('/api/trip/' + tripId).then(resp => {
-      console.log(resp.data)
-      console.log(resp.data.destinations)
-      setSeenLocations(resp.data.destinations)
-    })
-  }
-
+  const [error, setError] = useState('')
   const [view, setView] = useState({
     latitude: 27.9506,
     // this is up to 90
@@ -27,6 +18,33 @@ export default function PastDrive() {
     // this is up to 180
     zoom: 3
   })
+  const [mapStyle, setMapStyle] = useState()
+
+  const goGetList = e => {
+    e.preventDefault()
+    setError(false)
+    axios
+      .get('/api/trip/' + tripId)
+      .then(resp => {
+        console.log(resp.data)
+        console.log(resp.data.destinations)
+        if (resp.status === 200) {
+          // if null make error message display
+          setSeenLocations(resp.data.destinations)
+        } else {
+          setError('You must have dreamed that trip.')
+        }
+      })
+      .catch(error => {
+        setError(
+          "I'm sorry, your princess is in another tower. Please try again."
+        )
+        window.alert(
+          "I'm sorry, your princess is in another tower. Please try again."
+        )
+        window.location.reload(true)
+      })
+  }
 
   return (
     <section>
@@ -41,6 +59,7 @@ export default function PastDrive() {
         />
         <button style={{ display: 'none' }} />
       </form>
+      {error && <div style={{ color: 'red' }}>That trip doesn't exist yet</div>}
       {seenLocations ? (
         <ul>
           {seenLocations.map(location => {
