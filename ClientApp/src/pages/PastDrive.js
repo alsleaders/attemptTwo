@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import '../CSS/PastDrive.css'
 import axios from 'axios'
 import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl'
@@ -18,7 +18,6 @@ export default function PastDrive() {
     // this is up to 180
     zoom: 3
   })
-  const [mapStyle, setMapStyle] = useState()
 
   const goGetList = e => {
     e.preventDefault()

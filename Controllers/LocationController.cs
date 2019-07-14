@@ -33,7 +33,7 @@ namespace attempttwo.Controllers
     public ActionResult<List<Location>> Get()
     {
       // return await _context.Locations.Where(w => w.Visited != true).ToListAsync();
-      var tm = _context.Locations.Where(w => w.Visited != true);
+      var tm = _context.Locations.Include(i => i.Destinations).ThenInclude(i => i.Trip).Where(w => w.Visited != true);
       return tm.ToList();
     }
 

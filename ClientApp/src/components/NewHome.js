@@ -1,28 +1,28 @@
 import React, { Component } from 'react'
 import '../CSS/Home.css'
-import Map from 'mapbox-gl'
+// import Map from 'mapbox-gl'
 import axios from 'axios'
 import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import waterfall from 'async/waterfall'
-import mapboxgl from 'mapbox-gl'
+// import mapboxgl from 'mapbox-gl'
 
 const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
 
-function callback(e) {
-  return e
-}
+// function callback(e) {
+//   return e
+// }
 
-var framesPerSecond = 20
-var initialOpacity = 1
-var opacity = initialOpacity
-var initialRadius = 4
-var radius = initialRadius
-var maxRadius = 15
+// var framesPerSecond = 20
+// var initialOpacity = 1
+// var opacity = initialOpacity
+// var initialRadius = 4
+// var radius = initialRadius
+// var maxRadius = 15
 var lineCoordinates = []
 var speedFactor = 100 // number of frames per longitude degree
-var animation // to store and cancel the animation
+// var animation // to store and cancel the animation
 
 class NewHome extends Component {
   mapRef = {}
@@ -51,12 +51,6 @@ class NewHome extends Component {
   }
 
   componentDidMount() {
-    // let map = new mapboxgl.Map({
-    //   container: 'mapView',
-    //   style: this.state.style,
-    //   center: this.state.center,
-    //   zoom: this.state.zoom
-    // })
     console.log(this.mapRef)
     this.setState({ map: this.mapRef.getMap() })
 
@@ -78,11 +72,22 @@ class NewHome extends Component {
         console.log(resp.data)
         console.log(resp.data.id)
         axios
-          .post('/api/destination', { tripId: resp.data.id })
+          .post('/api/destination', {
+            tripId: resp.data.id,
+            location: this.state.currentLocationData
+          })
           .then(response => {
             console.log(response.data)
-            callback()
           })
+        axios
+          .post('/api/destination', {
+            tripId: resp.data.id,
+            location: this.state.plannedDestinationData
+          })
+          .then(answer => {
+            console.log(answer.data)
+          })
+        callback()
       })
   }
 
@@ -284,21 +289,21 @@ class NewHome extends Component {
 
     // function animateLine() {
     //   if (animationCounter < lineCoordinates.length) {
-    //     geojson.features[0].geometry.coordinates.push(
+    //     lineCoordinates.features[0].geometry.coordinates.push(
     //       lineCoordinates[animationCounter]
     //     )
-    //     this.state.map.getSource('line-animation').setData(geojson)
+    //     this.state.map.getSource('line-animation').setData(lineCoordinates)
 
     //     requestAnimationFrame(animateLine)
     //     animationCounter++
     //   } else {
-    //     var coord = geojson.features[0].geometry.coordinates
+    //     var coord = lineCoordinates.features[0].geometry.coordinates
     //     coord.shift()
     //     console.log(coord)
 
     //     if (coord.length > 0) {
-    //       geojson.features[0].geometry.coordinates = coord
-    //       this.state.map.getSource('line-animation').setData(geojson)
+    //       lineCoordinates.features[0].geometry.coordinates = coord
+    //       this.state.map.getSource('line-animation').setData(lineCoordinates)
 
     //       //-------------- Point2 Animation End ---------------
     //       requestAnimationFrame(animateLine)
@@ -316,9 +321,6 @@ class NewHome extends Component {
     console.log('submitting')
     waterfall([
       callback => {
-        this.makeNewTrip(callback)
-      },
-      callback => {
         this.getCurrentLoc(callback)
       },
       callback => {
@@ -329,6 +331,9 @@ class NewHome extends Component {
       },
       callback => {
         this.postPDtoDB(callback)
+      },
+      callback => {
+        this.makeNewTrip(callback)
       },
       callback => {
         this.getTheLine(callback)
@@ -343,6 +348,7 @@ class NewHome extends Component {
       plannedDestination: ''
     })
   }
+
   render() {
     return (
       <section>

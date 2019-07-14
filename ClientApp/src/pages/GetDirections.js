@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import '../CSS/CurrentDrive.css'
 // import Script from 'react-sscript'
 import axios from 'axios'
-import mapboxgl from 'mapbox-gl'
 import ReactMapGL, { NavigationControl } from 'react-map-gl'
 
 const TOKEN =

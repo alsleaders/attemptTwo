@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import './App.css'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
-import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl'
+import ReactMapboxGl from 'react-mapbox-gl'
 import DrawControl from 'react-mapbox-gl-draw'
 const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
