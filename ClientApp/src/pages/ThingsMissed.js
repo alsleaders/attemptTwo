@@ -12,12 +12,12 @@ export default function ThingsMissed() {
     })
   }, [])
 
-  // const addToCurrentTrip = itemId => {
-  // pass in item
-  // get long and lat
-  // add as a waypoint to the current trip
-  //   console.log('add button works')
-  // }
+  const addToCurrentTrip = itemId => {
+    // pass in item
+    // get long and lat
+    // add as a waypoint to the current trip
+    console.log('add button works', itemId)
+  }
 
   const deleteFromTable = itemId => {
     console.log(itemId)
@@ -49,7 +49,7 @@ export default function ThingsMissed() {
       <table className="table table-striped">
         <thead>
           <tr>
-            {/* <th>Add to Trip?</th> */}
+            <th>Add to Trip?</th>
             <th>Point of Interest</th>
             <th>Been there?</th>
             <th>Not worried about it?</th>
@@ -58,14 +58,14 @@ export default function ThingsMissed() {
         <tbody>
           {mapList.map(item => (
             <tr key={item.id}>
-              {/* <td>
+              <td>
                 <button
                   className="button"
                   onClick={() => addToCurrentTrip(item.id)}
                 >
                   Add
                 </button>
-              </td> */}
+              </td>
               <td>{item.place}</td>
               <td>
                 <button

@@ -412,7 +412,7 @@ class NewHome extends Component {
               </li>
             </ul>
           </form> */}
-          {/* <RadioGroup
+        {/* <RadioGroup
             name="map style"
             // value={this.state.mapDesign}
             options={[
@@ -421,7 +421,7 @@ class NewHome extends Component {
             ]}
             onChange={this.changeStation}
           /> */}
-        </section>
+        {/* </section> */}
         <section className="mapView" id="mapView">
           <ReactMapGL
             {...this.state.viewport}
