@@ -5,7 +5,7 @@ import axios from 'axios'
 import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import waterfall from 'async/waterfall'
-// import mapboxgl from 'mapbox-gl'
+import RadioGroup from 'react-radio-group'
 
 const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
@@ -43,7 +43,7 @@ class NewHome extends Component {
     plannedDestinationData: {},
     route: {},
     container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v9',
+    mapDesign: 'mapbox://styles/mapbox/satellite-streets-v11',
     center: [-122.486052, 37.830348],
     startPoint: [],
     endPoint: [],
@@ -349,18 +349,86 @@ class NewHome extends Component {
     })
   }
 
+  submitRadio = e => {
+    e.preventDefault()
+    this.changeStation()
+  }
+
+  changeStation = e => {
+    this.setState({
+      mapDesign: e.target.value
+    })
+  }
+
   render() {
     return (
       <section>
         <header>
           <h1>Start your Trip</h1>
         </header>
+        <section className="radio-buttons">
+          <form onSubmit={this.submitRadio}>
+            <ul style={{ listStyle: 'none' }}>
+              <li>
+                <label>
+                  <input
+                    type="radio"
+                    value="streets"
+                    checked={
+                      this.state.mapDesign ===
+                      'mapbox://styles/mapbox/satellite-streets-v11'
+                    }
+                    onChange={this.changeStation}
+                  />
+                  Streets
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input
+                    type="radio"
+                    value="outdoors"
+                    checked={
+                      this.state.mapDesign ===
+                      'mapbox://styles/mapbox/outdoors-v11'
+                    }
+                    onChange={this.changeStation}
+                  />
+                  Outdoors
+                </label>
+              </li>
+              <li>
+                <label>
+                  <input
+                    type="radio"
+                    value="dark"
+                    checked={
+                      this.state.mapDesign === 'mapbox://styles/mapbox/dark-v10'
+                    }
+                    onChange={() => this.changeStation}
+                  />
+                  Dark
+                </label>
+              </li>
+            </ul>
+          </form>
+          {/* <RadioGroup
+            name="map style"
+            // value={this.state.mapDesign}
+            options={[
+              { id: 'streets-v11', value: 'streets' },
+              { id: 'light-v10', value: 'light' }
+            ]}
+            onChange={this.changeStation}
+          /> */}
+        </section>
         <section className="mapView" id="mapView">
           <ReactMapGL
             {...this.state.viewport}
             width="60"
             height="60vh"
-            mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
+            mapStyle={this.state.mapDesign}
+            // "mapbox://styles/mapbox/satellite-streets-v11"
             mapboxApiAccessToken={TOKEN}
             onViewportChange={vp => this.setState({ viewport: vp })}
             ref={map => (this.mapRef = map)}
