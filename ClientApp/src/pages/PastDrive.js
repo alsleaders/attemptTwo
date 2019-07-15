@@ -8,7 +8,7 @@ const TOKEN =
 
 export default function PastDrive() {
   const [seenLocations, setSeenLocations] = useState([])
-  const [tripId, setTripId] = useState('')
+  const [tripName, setTripName] = useState('')
   const [selectedInfo, setSelectedInfo] = useState(null)
   const [error, setError] = useState('')
   const [view, setView] = useState({
@@ -18,18 +18,21 @@ export default function PastDrive() {
     // this is up to 180
     zoom: 3
   })
+  const [zebra, setZebra] = useState('')
 
   const goGetList = e => {
     e.preventDefault()
     setError(false)
     axios
-      .get('/api/trip/' + tripId)
+      .get('/api/location/' + tripName)
       .then(resp => {
         console.log(resp.data)
-        console.log(resp.data.destinations)
         if (resp.status === 200) {
           // if null make error message display
-          setSeenLocations(resp.data.destinations)
+          setSeenLocations(resp.data)
+          // setZebra(seenLocations.destinations)
+          console.log(zebra)
+          // axios.get('/api/trip/' + )
         } else {
           setError('You must have dreamed that trip.')
         }
@@ -38,9 +41,7 @@ export default function PastDrive() {
         setError(
           "I'm sorry, your princess is in another tower. Please try again."
         )
-        window.alert(
-          "I'm sorry, your princess is in another tower. Please try again."
-        )
+        window.alert("I'm sorry Dave. I can't do that.")
         window.location.reload(true)
       })
   }
@@ -54,12 +55,12 @@ export default function PastDrive() {
           type="text"
           name="tripId"
           placeholder="Trip #"
-          onChange={e => setTripId(e.target.value)}
+          onChange={e => setTripName(e.target.value)}
         />
         <button style={{ display: 'none' }} />
       </form>
       {error && <div style={{ color: 'red' }}>That trip doesn't exist yet</div>}
-      {seenLocations ? (
+      {/* {seenLocations ? (
         <ul>
           {seenLocations.map(location => {
             return <li>{location.location.place}</li>
@@ -67,7 +68,7 @@ export default function PastDrive() {
         </ul>
       ) : (
         ''
-      )}
+      )} */}
       <section className="mapView" id="mapView">
         <ReactMapGL
           {...view}
@@ -83,7 +84,7 @@ export default function PastDrive() {
           <div style={{ position: 'absolute', left: 0 }}>
             <NavigationControl />
           </div>
-          {seenLocations.map(city => {
+          {/* {seenLocations.map(city => {
             return (
               <Marker
                 key={city.location.id}
@@ -111,7 +112,7 @@ export default function PastDrive() {
             >
               <h2>{selectedInfo.place}</h2>
             </Popup>
-          ) : null}
+          ) : null} */}
         </ReactMapGL>
       </section>
     </section>

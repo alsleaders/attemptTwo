@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import '../CSS/ThingsMissed.css'
 
-export default function ThingsMissed() {
+export default function ThingsMissed(props) {
   const [mapList, setMapList] = useState([])
+  const [locationData, setLocationData] = useState({})
+  const [tripName, setTripName] = useState('')
+  const [tripNumber, setTripNumber] = useState('')
 
   useEffect(() => {
     axios.get('/api/location/visited').then(resp => {
@@ -12,11 +15,25 @@ export default function ThingsMissed() {
     })
   }, [])
 
-  const addToCurrentTrip = itemId => {
-    // pass in item
-    // get long and lat
-    // add as a waypoint to the current trip
-    console.log('add button works', itemId)
+  const findOldTrip = e => {
+    e.preventDefault()
+    axios.get('/api/location/' + tripName).then(resp => {
+      console.log(resp.data)
+      console.log(resp.data[1].destinations[0].trip.id)
+      setTripNumber(resp.data[1].destinations[0].trip.id)
+    })
+  }
+
+  const addToCurrentTrip = item => {
+    // setLocationData({ item })
+    console.log(item)
+    axios
+      .post('/api/destination/', { tripId: tripNumber, locationId: item.id })
+      .then(resp => console.log(resp.data))
+    console.log('add button works', item.id)
+    axios
+      .patch(`/api/location/${item.id}`)
+      .then(response => setMapList(oldList => oldList.concat(item !== item.id)))
   }
 
   const deleteFromTable = itemId => {
@@ -46,10 +63,22 @@ export default function ThingsMissed() {
         that once and take it off the list. <br />
         Anything goes.
       </p>
+      <hr />
+      <section>
+        <h3>Do you want to add a destination to a previous trip?</h3>
+        <form onSubmit={findOldTrip}>
+          <input
+            type="text"
+            placeholder="Where else did you go on that trip?"
+            onChange={e => setTripName(e.target.value)}
+          />
+          <button>Find that trip</button>
+        </form>
+      </section>
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Add to Trip?</th>
+            <th>Add to this Trip?</th>
             <th>Point of Interest</th>
             <th>Been there?</th>
             <th>Not worried about it?</th>
@@ -61,7 +90,7 @@ export default function ThingsMissed() {
               <td>
                 <button
                   className="button"
-                  onClick={() => addToCurrentTrip(item.id)}
+                  onClick={() => addToCurrentTrip(item)}
                 >
                   Add
                 </button>

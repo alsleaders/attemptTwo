@@ -38,17 +38,17 @@ namespace attempttwo.Controllers
     }
 
     // GET: api/Location/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Location>> GetLocation(int id)
+    [HttpGet("{placeName}")]
+    public async Task<ActionResult<List<Location>>> GetLocation(string placeName)
     {
-      var location = await _context.Locations.FindAsync(id);
+      var location = _context.Locations.Include(i => i.Destinations).ThenInclude(i => i.Trip).Where(w => w.Place.ToLower() == placeName.ToLower());
 
       if (location == null)
       {
         return NotFound();
       }
 
-      return location;
+      return await location.ToListAsync();
     }
 
     // Patch to change visited

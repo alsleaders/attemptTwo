@@ -47,7 +47,9 @@ class NewHome extends Component {
     center: [-122.486052, 37.830348],
     startPoint: [],
     endPoint: [],
-    tripNumber: 0
+    tripNumber: 0,
+    start: '',
+    end: ''
   }
 
   componentDidMount() {
@@ -62,11 +64,16 @@ class NewHome extends Component {
     })
   }
 
+  updateDates = e => {
+    console.log(this.state.start)
+    console.log(this.state.end)
+  }
+
   makeNewTrip = callback => {
     axios
       .post('/api/trip', {
-        StartDate: '2019-07-26',
-        EndDate: '2019-07-28'
+        StartDate: '2019-07-12',
+        EndDate: '2019-07-19'
       })
       .then(resp => {
         console.log(resp.data)
@@ -366,62 +373,6 @@ class NewHome extends Component {
         <header>
           <h1>Start your Trip</h1>
         </header>
-        {/* <section className="radio-buttons">
-          <form onSubmit={this.submitRadio}>
-            <ul style={{ listStyle: 'none' }}>
-              <li>
-                <label>
-                  <input
-                    type="radio"
-                    value="streets"
-                    checked={
-                      this.state.mapDesign ===
-                      'mapbox://styles/mapbox/satellite-streets-v11'
-                    }
-                    onChange={this.changeStation}
-                  />
-                  Streets
-                </label>
-              </li>
-              <li>
-                <label>
-                  <input
-                    type="radio"
-                    value="outdoors"
-                    checked={
-                      this.state.mapDesign ===
-                      'mapbox://styles/mapbox/outdoors-v11'
-                    }
-                    onChange={this.changeStation}
-                  />
-                  Outdoors
-                </label>
-              </li>
-              <li>
-                <label>
-                  <input
-                    type="radio"
-                    value="dark"
-                    checked={
-                      this.state.mapDesign === 'mapbox://styles/mapbox/dark-v10'
-                    }
-                    onChange={() => this.changeStation}
-                  />
-                  Dark
-                </label>
-              </li>
-            </ul>
-          </form> */}
-        {/* <RadioGroup
-            name="map style"
-            // value={this.state.mapDesign}
-            options={[
-              { id: 'streets-v11', value: 'streets' },
-              { id: 'light-v10', value: 'light' }
-            ]}
-            onChange={this.changeStation}
-          /> */}
-        {/* </section> */}
         <section className="mapView" id="mapView">
           <ReactMapGL
             {...this.state.viewport}
@@ -497,6 +448,19 @@ class NewHome extends Component {
               <button className="clear-button" onClick={this.clearInputs}>
                 Clear
               </button>
+              {/* </form> */}
+              {/* <form onSubmit={this.updateDates}> */}
+              {/* <input
+                type="datetime-local"
+                name="start"
+                onChange={e => this.setState({ start: e.target.value })}
+              />
+              <input
+                type="datetime-local"
+                name="end"
+                onChange={e => this.setState({ end: e.target.value })}
+              /> */}
+              {/* <button>Submit</button> */}
             </form>
           </div>
         </section>
