@@ -366,7 +366,7 @@ class NewHome extends Component {
         <header>
           <h1>Start your Trip</h1>
         </header>
-        <section className="radio-buttons">
+        {/* <section className="radio-buttons">
           <form onSubmit={this.submitRadio}>
             <ul style={{ listStyle: 'none' }}>
               <li>
@@ -411,7 +411,7 @@ class NewHome extends Component {
                 </label>
               </li>
             </ul>
-          </form>
+          </form> */}
           {/* <RadioGroup
             name="map style"
             // value={this.state.mapDesign}
