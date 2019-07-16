@@ -149,30 +149,30 @@ class NewHome extends Component {
       })
   }
 
-  postCLToDB = callback => {
-    axios.post('/api/location', this.state.currentLocationData).then(resp => {
-      console.log('Posting Current Location', this.state.currentLocationData)
-      // this.setState({
-      //   mapData: this.state.mapData.concat(resp.data)
-      // })
-      callback()
-    })
-  }
+  // postCLToDB = callback => {
+  //   axios.post('/api/location', this.state.currentLocationData).then(resp => {
+  //     console.log('Posting Current Location', this.state.currentLocationData)
+  //     // this.setState({
+  //     //   mapData: this.state.mapData.concat(resp.data)
+  //     // })
+  //     callback()
+  //   })
+  // }
 
-  postPDtoDB = callback => {
-    axios
-      .post('/api/location', this.state.plannedDestinationData)
-      .then(response => {
-        console.log(
-          'Posting Planned Destination',
-          this.state.plannedDestinationData
-        )
-        // this.setState({
-        //   mapData: this.state.mapData.concat(response.data)
-        // })
-        callback()
-      })
-  }
+  // postPDtoDB = callback => {
+  //   axios
+  //     .post('/api/location', this.state.plannedDestinationData)
+  //     .then(response => {
+  //       console.log(
+  //         'Posting Planned Destination',
+  //         this.state.plannedDestinationData
+  //       )
+  //       // this.setState({
+  //       //   mapData: this.state.mapData.concat(response.data)
+  //       // })
+  //       callback()
+  //     })
+  // }
 
   getTheLine = callback => {
     axios
@@ -340,12 +340,12 @@ class NewHome extends Component {
       callback => {
         this.getPlannedDes(callback)
       },
-      callback => {
-        this.postCLToDB(callback)
-      },
-      callback => {
-        this.postPDtoDB(callback)
-      },
+      // callback => {
+      //   this.postCLToDB(callback)
+      // },
+      // callback => {
+      //   this.postPDtoDB(callback)
+      // },
       callback => {
         this.makeNewTrip(callback)
       },
