@@ -41,7 +41,9 @@ export default function ThingsMissed(props) {
     console.log('add button works', item.id)
     axios
       .patch(`/api/location/${item.id}`)
-      .then(response => setMapList(oldList => oldList.filter(item !== item.id)))
+      .then(response =>
+        setMapList(oldList => oldList.filter(item => item !== item.id))
+      )
   }
 
   const deleteFromTable = itemId => {

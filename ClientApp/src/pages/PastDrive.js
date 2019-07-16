@@ -23,25 +23,17 @@ export default function PastDrive() {
 
   const findSpecificTrip = e => {
     e.preventDefault()
-    axios
-      .get('/api/location/' + tripName)
-      .then(resp => {
-        console.log(resp.data)
-        console.log(resp.data[0].destinations[0])
-        if (resp.status === 200) {
-          // if null make error message display
-          setZebra(resp.data[0].destinations[0])
-        } else {
-          setError('You must have dreamed that trip.')
-        }
-      })
-      .catch(error => {
-        setError(
-          "I'm sorry, your princess is in another tower. Please try again."
-        )
-        window.alert("I'm sorry Dave. I can't do that.")
-        window.location.reload(true)
-      })
+    axios.get('/api/location/' + tripName).then(resp => {
+      console.log(resp.data)
+      console.log(resp.data[0].destinations[0])
+      if (resp.status === 200) {
+        // if null make error message display
+        setZebra(resp.data[0].destinations[0])
+      } else {
+        setError('You must have dreamed that trip.')
+      }
+    })
+
     // setTimeout(callback(), 0)
   }
 
