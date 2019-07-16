@@ -20,9 +20,9 @@ export default function ThingsMissed(props) {
     e.preventDefault()
     axios.get('/api/location/' + tripName).then(resp => {
       console.log(resp.data)
-      console.log(resp.data[0].destinations[0].trip.id)
+      console.log(resp.data[0].destinations[0].tripId)
       setTripNumber(resp.data)
-      setTripIdentifier(resp.data[0].destinations[0].trip.id)
+      setTripIdentifier(resp.data[0].destinations[0].tripId)
     })
     axios.get('/api/trip/' + tripIdentifier).then(response => {
       console.log(response.data)
