@@ -29,3 +29,7 @@ html {
   background-color: #416486;
   color: rgb(235, 227, 227);
 }
+
+.prev-trip-input {
+  width: 25rem;
+}

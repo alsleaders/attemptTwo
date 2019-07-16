@@ -6,7 +6,8 @@ export default function ThingsMissed(props) {
   const [mapList, setMapList] = useState([])
   const [locationData, setLocationData] = useState({})
   const [tripName, setTripName] = useState('')
-  const [tripNumber, setTripNumber] = useState('')
+  const [tripNumber, setTripNumber] = useState([])
+  const [tripIdentifier, setTripIdentifier] = useState('')
 
   useEffect(() => {
     axios.get('/api/location/visited').then(resp => {
@@ -19,8 +20,9 @@ export default function ThingsMissed(props) {
     e.preventDefault()
     axios.get('/api/location/' + tripName).then(resp => {
       console.log(resp.data)
-      console.log(resp.data[1].destinations[0].trip.id)
-      setTripNumber(resp.data[1].destinations[0].trip.id)
+      console.log(resp.data[0].destinations[0].trip.id)
+      setTripNumber(resp.data)
+      setTripIdentifier(resp.data[0].destinations[0].trip.id)
     })
   }
 
@@ -28,7 +30,10 @@ export default function ThingsMissed(props) {
     // setLocationData({ item })
     console.log(item)
     axios
-      .post('/api/destination/', { tripId: tripNumber, locationId: item.id })
+      .post('/api/destination/', {
+        tripId: tripIdentifier,
+        locationId: item.id
+      })
       .then(resp => console.log(resp.data))
     console.log('add button works', item.id)
     axios
@@ -68,6 +73,7 @@ export default function ThingsMissed(props) {
         <h3>Do you want to add a destination to a previous trip?</h3>
         <form onSubmit={findOldTrip}>
           <input
+            className="prev-trip-input"
             type="text"
             placeholder="Where else did you go on that trip?"
             onChange={e => setTripName(e.target.value)}
