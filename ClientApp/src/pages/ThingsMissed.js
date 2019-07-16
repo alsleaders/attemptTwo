@@ -29,21 +29,22 @@ export default function ThingsMissed(props) {
     })
   }
 
-  const addToCurrentTrip = item => {
+  const addToCurrentTrip = itemId => {
     // setLocationData({ item })
-    console.log(item)
+    console.log(itemId)
     axios
       .post('/api/destination/', {
         tripId: tripIdentifier,
-        locationId: item.id
+        locationId: itemId
       })
       .then(resp => console.log(resp.data))
-    console.log('add button works', item.id)
+    console.log('add button works', itemId)
     axios
-      .patch(`/api/location/${item.id}`)
+      .patch(`/api/location/${itemId}`)
       .then(response =>
-        setMapList(oldList => oldList.filter(item => item !== item.id))
+        setMapList(oldList => oldList.filter(item => item.id !== item.Id))
       )
+    window.location.reload(true)
   }
 
   const deleteFromTable = itemId => {
@@ -101,7 +102,7 @@ export default function ThingsMissed(props) {
               <td>
                 <button
                   className="button"
-                  onClick={() => addToCurrentTrip(item)}
+                  onClick={() => addToCurrentTrip(item.id)}
                 >
                   Add
                 </button>
