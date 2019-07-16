@@ -108,7 +108,7 @@ class GetDirections extends Component {
             {...this.state.viewport}
             width="60"
             height="60vh"
-            mapStyle="mapbox://styles/mapbox/light-v10"
+            mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
             mapboxApiAccessToken={TOKEN}
             onViewportChange={vp => this.setState({ viewport: vp })}
             ref={map => (this.mapRef = map)}

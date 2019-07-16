@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import '../CSS/PastDrive.css'
 import axios from 'axios'
 import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl'
+import waterfall from 'async/waterfall'
 
 const TOKEN =
   'pk.eyJ1IjoiYWxzbGVhZGVycyIsImEiOiJjang1aXNrcGkwMmR5M3lsZzg4OXFyNWRqIn0.qQib-cz84tOegHyTyc0U9g'
@@ -18,21 +19,18 @@ export default function PastDrive() {
     // this is up to 180
     zoom: 3
   })
-  const [zebra, setZebra] = useState('')
+  const [zebra, setZebra] = useState({})
 
-  const goGetList = e => {
+  const findSpecificTrip = e => {
     e.preventDefault()
-    setError(false)
     axios
       .get('/api/location/' + tripName)
       .then(resp => {
         console.log(resp.data)
+        console.log(resp.data[0].destinations[0])
         if (resp.status === 200) {
           // if null make error message display
-          setSeenLocations(resp.data)
-          // setZebra(seenLocations.destinations)
-          console.log(zebra)
-          // axios.get('/api/trip/' + )
+          setZebra(resp.data[0].destinations[0])
         } else {
           setError('You must have dreamed that trip.')
         }
@@ -44,37 +42,67 @@ export default function PastDrive() {
         window.alert("I'm sorry Dave. I can't do that.")
         window.location.reload(true)
       })
+    // setTimeout(callback(), 0)
   }
+
+  useEffect(() => {
+    axios.get('/api/trip/' + zebra.tripId).then(resp => {
+      console.log(resp.data)
+      setSeenLocations(resp.data.destinations)
+    })
+  }, [zebra])
+
+  //   console.log(zebra)
+  //   // axios.get('/api/trip/' + )
+  //   callback()
+  // }
+
+  // const goGetList = e => {
+  //   e.preventDefault()
+  //   setError(false)
+  //   waterfall([
+  //     callback => {
+  //       findSpecificTrip(callback)
+  //     },
+  //     callback => {
+  //       findLocForThatTrip(callback)
+  //     }
+  //   ])
+  // }
 
   return (
     <section>
       <h1>Oh the Places You've Been</h1>
-      <h3>Pick a trip, any trip</h3>
-      <form className="past-input" onSubmit={goGetList}>
+      <h3>Review your old trips</h3>
+      <form className="past-input" onSubmit={findSpecificTrip}>
         <input
+          className="prev-trip-input"
           type="text"
           name="tripId"
-          placeholder="Trip #"
+          placeholder="Where did you go on that trip?"
           onChange={e => setTripName(e.target.value)}
         />
         <button style={{ display: 'none' }} />
       </form>
       {error && <div style={{ color: 'red' }}>That trip doesn't exist yet</div>}
-      {/* {seenLocations ? (
-        <ul>
-          {seenLocations.map(location => {
-            return <li>{location.location.place}</li>
-          })}
-        </ul>
+      {seenLocations ? (
+        <>
+          <h5>Here's all the places you saw on that trip</h5>
+          <ul>
+            {seenLocations.map(location => {
+              return <li className="elephant">{location.location.place}</li>
+            })}
+          </ul>{' '}
+        </>
       ) : (
         ''
-      )} */}
+      )}
       <section className="mapView" id="mapView">
         <ReactMapGL
           {...view}
           width="60"
           height="60vh"
-          mapStyle="mapbox://styles/mapbox/outdoors-v11"
+          mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
           mapboxApiAccessToken={TOKEN}
           onViewportChange={view => {
             setView(view)
@@ -84,7 +112,7 @@ export default function PastDrive() {
           <div style={{ position: 'absolute', left: 0 }}>
             <NavigationControl />
           </div>
-          {/* {seenLocations.map(city => {
+          {seenLocations.map(city => {
             return (
               <Marker
                 key={city.location.id}
@@ -112,7 +140,7 @@ export default function PastDrive() {
             >
               <h2>{selectedInfo.place}</h2>
             </Popup>
-          ) : null} */}
+          ) : null}
         </ReactMapGL>
       </section>
     </section>

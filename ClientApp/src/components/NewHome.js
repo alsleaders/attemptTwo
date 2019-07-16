@@ -78,6 +78,7 @@ class NewHome extends Component {
       .then(resp => {
         console.log(resp.data)
         console.log(resp.data.id)
+        console.log('this is the return on the trip being posted')
         axios
           .post('/api/destination', {
             tripId: resp.data.id,
@@ -85,6 +86,9 @@ class NewHome extends Component {
           })
           .then(response => {
             console.log(response.data)
+            console.log(
+              'this is the return of the first destination being posted'
+            )
           })
         axios
           .post('/api/destination', {
@@ -93,6 +97,9 @@ class NewHome extends Component {
           })
           .then(answer => {
             console.log(answer.data)
+            console.log(
+              'this is the return of the second destination being posted'
+            )
           })
         callback()
       })
@@ -344,27 +351,19 @@ class NewHome extends Component {
       },
       callback => {
         this.getTheLine(callback)
+      },
+      callback => {
+        this.clearInputs(callback)
       }
     ])
   }
 
-  clearInputs = e => {
-    e.preventDefault()
+  clearInputs = callback => {
     this.setState({
       currentLocation: '',
       plannedDestination: ''
     })
-  }
-
-  submitRadio = e => {
-    e.preventDefault()
-    this.changeStation()
-  }
-
-  changeStation = e => {
-    this.setState({
-      mapDesign: e.target.value
-    })
+    callback()
   }
 
   render() {
@@ -426,7 +425,7 @@ class NewHome extends Component {
               <input
                 type="text"
                 placeholder="Current location"
-                value={this.state.currentLocation}
+                // value={this.state.currentLocation}
                 onChange={e =>
                   this.setState({
                     currentLocation: e.target.value
@@ -436,7 +435,7 @@ class NewHome extends Component {
               <input
                 type="text"
                 placeholder="Planned destination"
-                value={this.state.plannedDestination}
+                // value={this.state.plannedDestination}
                 onChange={e =>
                   this.setState({
                     plannedDestination: e.target.value
@@ -445,7 +444,7 @@ class NewHome extends Component {
               />
               <button>Submit</button>
               {/* style={{ display: 'none' }} */}
-              <button className="clear-button" onClick={this.clearInputs}>
+              <button type="reset" className="clear-button">
                 Clear
               </button>
               {/* </form> */}

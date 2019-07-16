@@ -98,7 +98,7 @@ namespace attempttwo.Controllers
       _context.Locations.Add(location);
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction("GetLocation", new { id = location.Id }, location);
+      return Ok(location);
     }
 
     // DELETE: api/Location/5

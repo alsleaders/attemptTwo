@@ -24,6 +24,9 @@ export default function ThingsMissed(props) {
       setTripNumber(resp.data)
       setTripIdentifier(resp.data[0].destinations[0].trip.id)
     })
+    axios.get('/api/trip/' + tripIdentifier).then(response => {
+      console.log(response.data)
+    })
   }
 
   const addToCurrentTrip = item => {
