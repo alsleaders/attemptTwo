@@ -65,6 +65,7 @@ class NewHome extends Component {
   }
 
   updateDates = e => {
+    e.preventDefault()
     console.log(this.state.start)
     console.log(this.state.end)
   }
@@ -72,8 +73,8 @@ class NewHome extends Component {
   makeNewTrip = callback => {
     axios
       .post('/api/trip', {
-        StartDate: '2019-07-12',
-        EndDate: '2019-07-19'
+        StartDate: this.state.start,
+        EndDate: this.state.end
       })
       .then(resp => {
         console.log(resp.data)
@@ -419,7 +420,27 @@ class NewHome extends Component {
         </section>
         <hr />
         <section className="input-fields">
-          {/* <h3>Where do we go now?</h3> */}
+          <h4>When is this trip?</h4>
+          <div className="input-column">
+            <form onSubmit={this.updateDates}>
+              <input
+                type="date"
+                name="start"
+                onChange={e => this.setState({ start: e.target.value })}
+              />
+              <input
+                type="date"
+                name="end"
+                onChange={e => this.setState({ end: e.target.value })}
+              />
+              <button>Submit</button>
+              <button type="reset" className="clear-button">
+                Clear{' '}
+              </button>
+            </form>
+          </div>
+          <hr />
+          <h4>Where are you going?</h4>
           <div className="input-column">
             <form onSubmit={this.planTrip}>
               <input
@@ -447,19 +468,6 @@ class NewHome extends Component {
               <button type="reset" className="clear-button">
                 Clear
               </button>
-              {/* </form> */}
-              {/* <form onSubmit={this.updateDates}> */}
-              {/* <input
-                type="datetime-local"
-                name="start"
-                onChange={e => this.setState({ start: e.target.value })}
-              />
-              <input
-                type="datetime-local"
-                name="end"
-                onChange={e => this.setState({ end: e.target.value })}
-              /> */}
-              {/* <button>Submit</button> */}
             </form>
           </div>
         </section>

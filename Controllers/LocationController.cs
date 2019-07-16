@@ -41,7 +41,11 @@ namespace attempttwo.Controllers
     [HttpGet("{placeName}")]
     public async Task<ActionResult<List<Location>>> GetLocation(string placeName)
     {
-      var location = _context.Locations.Include(i => i.Destinations).ThenInclude(i => i.Trip).Where(w => w.Place.ToLower() == placeName.ToLower());
+      var location = _context.Locations
+        .Include(i => i.Destinations)
+        .ThenInclude(i => i.Trip)
+        .Where(w => w.Destinations.Count > 0)
+        .Where(w => w.Place.ToLower() == placeName.ToLower());
 
       if (location == null)
       {

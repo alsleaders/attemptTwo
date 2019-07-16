@@ -70,6 +70,10 @@ export default function PastDrive() {
   //   ])
   // }
 
+  const clearThisUp = () => {
+    window.location.reload(true)
+  }
+
   return (
     <section>
       <h1>Oh the Places You've Been</h1>
@@ -82,12 +86,15 @@ export default function PastDrive() {
           placeholder="Where did you go on that trip?"
           onChange={e => setTripName(e.target.value)}
         />
-        <button style={{ display: 'none' }} />
+        <button>Submit</button>
+        <button type="reset" className="clear-button" onClick={clearThisUp}>
+          Clear
+        </button>
       </form>
       {error && <div style={{ color: 'red' }}>That trip doesn't exist yet</div>}
       {seenLocations ? (
         <>
-          <h5>Here's all the places you saw on that trip</h5>
+          <h5>Here are the places you saw on that trip</h5>
           <ul>
             {seenLocations.map(location => {
               return <li className="elephant">{location.location.place}</li>

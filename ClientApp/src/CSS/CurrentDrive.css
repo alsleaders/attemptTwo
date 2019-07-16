@@ -18,3 +18,8 @@ html {
   justify-content: center;
   align-items: center;
 }
+
+.directions-control.directions-control-instructions {
+  width: 105%;
+  z-index: 1;
+}

@@ -42,9 +42,9 @@ export default function ThingsMissed(props) {
     axios
       .patch(`/api/location/${itemId}`)
       .then(response =>
-        setMapList(oldList => oldList.filter(item => item.id !== item.Id))
+        setMapList(oldList => oldList.filter(item => item.id !== itemId))
       )
-    window.location.reload(true)
+    // window.location.reload(true)
   }
 
   const deleteFromTable = itemId => {

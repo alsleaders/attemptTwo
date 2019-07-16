@@ -29,7 +29,7 @@ namespace attempttwo.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<Trip>> GetTrip(int id)
     {
-      var trip = await _context.Trips.Include(i => i.Destinations).ThenInclude(i => i.Location).FirstOrDefaultAsync(f => f.Id == id);
+      var trip = await _context.Trips.Include(i => i.Destinations).ThenInclude(i => i.Location).OrderBy(o => o.EndDate).FirstOrDefaultAsync(f => f.Id == id);
 
       if (trip == null)
       {
