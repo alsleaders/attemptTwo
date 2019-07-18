@@ -44,7 +44,6 @@ export default function ThingsMissed(props) {
       .then(response =>
         setMapList(oldList => oldList.filter(item => item.id !== itemId))
       )
-    // window.location.reload(true)
   }
 
   const deleteFromTable = itemId => {

@@ -14,9 +14,7 @@ export default function PastDrive() {
   const [error, setError] = useState('')
   const [view, setView] = useState({
     latitude: 27.9506,
-    // this is up to 90
     longitude: -82.4572,
-    // this is up to 180
     zoom: 3
   })
   const [zebra, setZebra] = useState({})
@@ -29,7 +27,6 @@ export default function PastDrive() {
         console.log(resp.data)
         console.log(resp.data[0].destinations[0])
         if (resp.status === 200) {
-          // if null make error message display
           setZebra(resp.data[0].destinations[0])
         } else {
           setError('You must have dreamed that trip.')
@@ -42,7 +39,6 @@ export default function PastDrive() {
         window.alert("I'm sorry Dave. I can't do that.")
         window.location.reload(true)
       })
-    // setTimeout(callback(), 0)
   }
 
   useEffect(() => {
@@ -51,24 +47,6 @@ export default function PastDrive() {
       setSeenLocations(resp.data.destinations)
     })
   }, [zebra])
-
-  //   console.log(zebra)
-  //   // axios.get('/api/trip/' + )
-  //   callback()
-  // }
-
-  // const goGetList = e => {
-  //   e.preventDefault()
-  //   setError(false)
-  //   waterfall([
-  //     callback => {
-  //       findSpecificTrip(callback)
-  //     },
-  //     callback => {
-  //       findLocForThatTrip(callback)
-  //     }
-  //   ])
-  // }
 
   const clearThisUp = () => {
     window.location.reload(true)
