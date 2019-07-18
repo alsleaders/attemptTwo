@@ -58,7 +58,7 @@ export default function ThingsMissed(props) {
 
   const updateVisited = itemId => {
     console.log(itemId)
-    axios.patch(` /api/location/${itemId}`).then(resp => {
+    axios.patch(`/api/location/${itemId}`).then(resp => {
       setMapList(oldList => oldList.filter(item => item.id !== itemId))
       console.log('visited updated')
     })
