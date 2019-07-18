@@ -30,7 +30,6 @@ export default function ThingsMissed(props) {
   }
 
   const addToCurrentTrip = itemId => {
-    // setLocationData({ item })
     console.log(itemId)
     axios
       .post('/api/destination/', {
